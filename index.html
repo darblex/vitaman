@@ -1,0 +1,808 @@
+﻿<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VITAMAN — הכוח הטבעי של הגבר</title>
+  <meta name="description" content="תוסף טבעי לגברים — מורינגה, כורכום וחבילת כוח. הזמנה מהירה דרך טלגרם או וואטסאפ." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ⚠️ TODO: Replace your-domain.com with your actual domain throughout this file -->
+  <link rel="canonical" href="https://your-domain.com/" />
+  <link rel="alternate" hreflang="he" href="https://your-domain.com/" />
+
+  <!-- Favicon — TODO: Add actual favicon files to root -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline' https://connect.facebook.net;
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src https://fonts.gstatic.com;
+                 img-src 'self' https://www.facebook.com data:;
+                 connect-src 'self' https://www.facebook.com;" />
+
+  <!-- Google Fonts — Heebo (Hebrew-optimized) with preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://connect.facebook.net" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Open Graph — TODO: Replace your-domain.com -->
+  <meta property="og:title" content="VITAMAN — הכוח הטבעי של הגבר" />
+  <meta property="og:description" content="פתרון טבעי, נקי וישיר לגברים שמחפשים חיוניות, אנרגיה וכוח." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-domain.com/" />
+  <meta property="og:image" content="https://your-domain.com/images/og-cover.jpg" />
+  <meta property="og:locale" content="he_IL" />
+  <meta property="og:site_name" content="VITAMAN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VITAMAN — הכוח הטבעי של הגבר" />
+  <meta name="twitter:description" content="פתרון טבעי, נקי וישיר לגברים שמחפשים חיוניות, אנרגיה וכוח." />
+  <meta name="twitter:image" content="https://your-domain.com/images/og-cover.jpg" />
+
+  <!-- Structured Data (JSON-LD) — Enhanced with brand, availability, descriptions -->
+  <!-- TODO: Replace your-domain.com and phone number -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "VITAMAN",
+    "description": "תוסף טבעי לגברים — מורינגה, כורכום וחבילת כוח",
+    "url": "https://your-domain.com",
+    "logo": "https://your-domain.com/images/logo.png",
+    "image": "https://your-domain.com/images/og-cover.jpg",
+    "telephone": "+972-00-000-0000",
+    "currenciesAccepted": "ILS",
+    "paymentAccepted": "Cash, Bit, PayBox, Bank Transfer",
+    "areaServed": { "@type": "Country", "name": "Israel" },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IL"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "850",
+      "bestRating": "5"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "מוצרי VITAMAN",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Product",
+            "name": "VITAMAN מורינגה",
+            "description": "תוסף טבעי המבוסס על מורינגה, למי שמחפש יותר אנרגיה ותחושת רעננות",
+            "brand": { "@type": "Brand", "name": "VITAMAN" }
+          },
+          "price": "89",
+          "priceCurrency": "ILS",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Product",
+            "name": "VITAMAN כורכום",
+            "description": "כורכום איכותי עם מיקוד בגבר שרוצה שגרה יציבה ונוחות גופנית",
+            "brand": { "@type": "Brand", "name": "VITAMAN" }
+          },
+          "price": "89",
+          "priceCurrency": "ILS",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Product",
+            "name": "חבילת כוח",
+            "description": "מורינגה + כורכום יחד — פתרון טבעי אחד מסודר, פשוט ומשתלם",
+            "brand": { "@type": "Brand", "name": "VITAMAN" }
+          },
+          "price": "149",
+          "priceCurrency": "ILS",
+          "availability": "https://schema.org/InStock"
+        }
+      ]
+    }
+  }
+  </script>
+
+  <!-- Facebook Pixel — TODO: Replace YOUR_PIXEL_ID with actual Pixel ID -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1" alt="" /></noscript>
+
+  <style>
+    /* ─── Design Tokens ──────────────────────────────── */
+    :root {
+      --bg: #111111;
+      --card: #1b1b1b;
+      --gold: #d4af37;
+      --gold-hover: #e0c04a;
+      --green: #2d5016;
+      --text: #f6f1e8;
+      --muted: #cbbf9e;
+      --line: rgba(212,175,55,.18);
+      --focus-ring: rgba(212,175,55,.65);
+    }
+
+    /* ─── Global Reset & Base ────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Heebo', Arial, sans-serif;
+      background: linear-gradient(180deg, #0d0d0d, #171717);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ─── Skip Link (Accessibility) ──────────────────── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: #111;
+      padding: 12px 24px;
+      border-radius: 0 0 12px 12px;
+      font-weight: 700;
+      z-index: 10001;
+      text-decoration: none;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ─── Focus Styles (keyboard-only) ───────────────── */
+    :focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    :focus:not(:focus-visible) { outline: none; }
+
+    /* ─── Screen-Reader Only Utility ────────────────── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ─── Layout ─────────────────────────────────────── */
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+
+    /* ─── Hero ───────────────────────────────────────── */
+    .hero {
+      padding: 72px 0 48px;
+      background: radial-gradient(circle at top right, rgba(212,175,55,.12), transparent 30%);
+    }
+    .badge {
+      display: inline-block;
+      border: 1px solid var(--line);
+      color: var(--gold);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 18px;
+      background: rgba(212,175,55,.05);
+    }
+    h1 {
+      font-size: clamp(34px, 6vw, 62px);
+      margin: 0 0 14px;
+      line-height: 1.1;
+    }
+    .sub {
+      font-size: clamp(18px, 2.4vw, 24px);
+      color: var(--muted);
+      max-width: 760px;
+      margin-bottom: 26px;
+    }
+
+    /* ─── Buttons ────────────────────────────────────── */
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn.primary { background: var(--gold); color: #111; }
+    .btn.primary:hover, .btn.primary:focus-visible {
+      transform: translateY(-2px);
+      background: var(--gold-hover);
+      box-shadow: 0 6px 20px rgba(212,175,55,.35);
+    }
+    .btn.primary:active { transform: translateY(0); }
+    .btn.secondary {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.02);
+    }
+    .btn.secondary:hover, .btn.secondary:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.06);
+      border-color: var(--gold);
+    }
+    .btn.secondary:active { transform: translateY(0); }
+
+    /* ─── Product Grid ───────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 34px 0 18px;
+    }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Cards ──────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.28);
+    }
+    .card h3 { margin-top: 0; font-size: 24px; }
+    .price { color: var(--gold); font-size: 28px; font-weight: 800; margin: 10px 0; }
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #d9f0c8;
+      background: rgba(45,80,22,.35);
+      border: 1px solid rgba(124,184,79,.2);
+      margin-bottom: 12px;
+    }
+
+    /* ─── Sections ───────────────────────────────────── */
+    .section { padding: 22px 0 54px; }
+    .section h2 { font-size: 34px; margin-bottom: 8px; }
+    .muted { color: var(--muted); }
+
+    /* ─── Order Steps ────────────────────────────────── */
+    .steps {
+      list-style: none;
+      counter-reset: step;
+      display: grid;
+      gap: 14px;
+      margin: 18px 0 0;
+      padding: 0;
+    }
+    .step {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 18px;
+      border-radius: 18px;
+      counter-increment: step;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .step:hover {
+      transform: translateX(6px);
+      border-color: var(--gold);
+    }
+    .step::before {
+      content: counter(step);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      background: var(--gold);
+      color: #111;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Stats Row ──────────────────────────────────── */
+    .stats-row {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 28px 0;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-suffix {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* ─── Testimonials ───────────────────────────────── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (max-width: 860px) {
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    .testimonial-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      transition: transform .25s ease;
+    }
+    .testimonial-card:hover { transform: translateY(-3px); }
+    .testimonial-stars { margin-bottom: 10px; font-size: 18px; }
+    .testimonial-card p { font-size: 15px; line-height: 1.7; color: var(--text); margin: 0 0 10px; }
+    .testimonial-author { font-size: 13px; color: var(--muted); font-style: normal; display: block; }
+
+    /* ─── Disclaimer ─────────────────────────────────── */
+    .notice {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #d6caa9;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+    }
+
+    /* ─── Footer ─────────────────────────────────────── */
+    body > footer { padding: 26px 0 38px; color: var(--muted); font-size: 14px; }
+    body > footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    body > footer a:hover { color: var(--gold); }
+
+    /* ─── Floating WhatsApp ──────────────────────────── */
+    #wa-float {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 999;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,.4);
+      animation: wa-pulse 2s ease-in-out infinite;
+      transition: transform .2s;
+      text-decoration: none;
+    }
+    #wa-float:hover, #wa-float:focus-visible { transform: scale(1.1); }
+    #wa-float:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 4px;
+    }
+    @keyframes wa-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,.4); }
+      50% { box-shadow: 0 4px 30px rgba(37,211,102,.7); }
+    }
+
+    /* ─── Exit Popup ─────────────────────────────────── */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,.75);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .popup-overlay.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .popup-box {
+      background: var(--card);
+      border: 2px solid var(--gold);
+      border-radius: 22px;
+      padding: 36px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      transform: scale(.9);
+      transition: transform .3s ease;
+    }
+    .popup-overlay.is-visible .popup-box {
+      transform: scale(1);
+    }
+    .popup-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 28px;
+      cursor: pointer;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      line-height: 1;
+      transition: color .2s;
+    }
+    .popup-close:hover, .popup-close:focus-visible { color: var(--gold); }
+    .popup-box h3 { color: var(--gold); margin-top: 0; font-size: 24px; }
+    .popup-box p { color: var(--text); font-size: 16px; }
+    .popup-code {
+      background: rgba(212,175,55,.1);
+      border: 1px dashed var(--gold);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 20px;
+      margin: 16px 0;
+    }
+    .popup-muted { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+    /* ─── Reduced Motion Preference ──────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ─── Mobile Refinements ─────────────────────────── */
+    @media (max-width: 480px) {
+      .hero { padding: 48px 0 32px; }
+      .cta-row { flex-direction: column; }
+      .cta-row .btn { width: 100%; text-align: center; }
+      .stat-number { font-size: 36px; }
+      .stat-suffix { font-size: 22px; }
+      .section h2 { font-size: 28px; }
+      .popup-box { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip to Content (Accessibility) -->
+  <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
+
+  <main id="main-content">
+
+    <!-- ────────────────── Hero Section ────────────────── -->
+    <section class="hero" aria-label="באנר ראשי">
+      <div class="wrap">
+        <div class="badge">תוסף טבעי לגברים</div>
+        <h1>הכוח הטבעי של הגבר מתחיל בפנים</h1>
+        <p class="sub"><span lang="en">VITAMAN</span> מביא לך שילוב נקי, טבעי וישיר של מורינגה וכורכום — לגברים שרוצים יותר חיוניות, יותר אנרגיה ותחושה חזקה יותר ביום־יום.</p>
+        <div class="cta-row">
+          <!-- ⚠️ PLACEHOLDER: Replace with actual Telegram store link -->
+          <a class="btn primary" href="https://t.me/PLACEHOLDER" target="_blank" rel="noopener noreferrer" aria-label="כניסה לחנות VITAMAN בטלגרם">כניסה לחנות בטלגרם</a>
+          <!-- ⚠️ PLACEHOLDER: Replace 972000000000 with actual WhatsApp number -->
+          <a class="btn secondary" href="https://wa.me/972000000000" target="_blank" rel="noopener noreferrer" aria-label="דבר עם נציג VITAMAN בוואטסאפ">דבר עם נציג עכשיו</a>
+        </div>
+
+        <!-- Product Cards -->
+        <h2 class="sr-only">המוצרים שלנו</h2>
+        <div class="grid" role="list" aria-label="מוצרי VITAMAN">
+          <article class="card" role="listitem">
+            <span class="pill">חיוניות טבעית</span>
+            <h3><span lang="en">VITAMAN</span> מורינגה</h3>
+            <p>תוסף טבעי המבוסס על מורינגה, למי שמחפש יותר אנרגיה, תחושת רעננות ושגרה חזקה יותר.</p>
+            <div class="price" aria-label="מחיר: 89 שקלים">₪89</div>
+            <!-- ⚠️ PLACEHOLDER: Replace 972000000000 -->
+            <a class="btn primary" href="https://wa.me/972000000000?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20VITAMAN%20%D7%9E%D7%95%D7%A8%D7%99%D7%A0%D7%92%D7%94" target="_blank" rel="noopener noreferrer" aria-label="הזמן VITAMAN מורינגה בוואטסאפ">הזמן עכשיו</a>
+          </article>
+          <article class="card" role="listitem">
+            <span class="pill">תמיכה יומיומית</span>
+            <h3><span lang="en">VITAMAN</span> כורכום</h3>
+            <p>כורכום איכותי עם מיקוד בגבר שרוצה לשמור על שגרה יציבה, נוחות גופנית ותחושת עוצמה.</p>
+            <div class="price" aria-label="מחיר: 89 שקלים">₪89</div>
+            <!-- ⚠️ PLACEHOLDER: Replace 972000000000 -->
+            <a class="btn primary" href="https://wa.me/972000000000?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20VITAMAN%20%D7%9B%D7%95%D7%A8%D7%9B%D7%95%D7%9D" target="_blank" rel="noopener noreferrer" aria-label="הזמן VITAMAN כורכום בוואטסאפ">הזמן עכשיו</a>
+          </article>
+          <article class="card" role="listitem">
+            <span class="pill">החבילה המשתלמת</span>
+            <h3>חבילת כוח</h3>
+            <p>מורינגה + כורכום יחד, לגבר שרוצה פתרון טבעי אחד מסודר, פשוט ומשתלם.</p>
+            <div class="price" aria-label="מחיר: 149 שקלים">₪149</div>
+            <!-- ⚠️ PLACEHOLDER: Replace 972000000000 -->
+            <a class="btn primary" href="https://wa.me/972000000000?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%90%D7%AA%20%D7%97%D7%91%D7%99%D7%9C%D7%AA%20%D7%94%D7%9B%D7%95%D7%97" target="_blank" rel="noopener noreferrer" aria-label="הזמן חבילת כוח בוואטסאפ">קח את החבילה</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────── Why Natural Section ─────────────── -->
+    <section class="section" aria-labelledby="why-heading">
+      <div class="wrap">
+        <h2 id="why-heading">למה גברים בוחרים טבעי?</h2>
+        <p class="muted">כי לפעמים לא צריך רעש. צריך שגרה טובה, מוצרים ברורים, ומישהו שמסביר פשוט.</p>
+        <div class="grid" role="list" aria-label="יתרונות המותג">
+          <div class="card" role="listitem"><h3>בלי מסכות</h3><p>מוצר נקי, מסר נקי, תהליך קנייה קצר.</p></div>
+          <div class="card" role="listitem"><h3>שפה ישירה</h3><p>לא מדברים מסביב — בוחרים מוצר, משאירים פרטים, וסוגרים.</p></div>
+          <div class="card" role="listitem"><h3>קנייה מהירה</h3><p>פייסבוק → טלגרם → נציג → סגירה.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────── How to Order Section ────────────── -->
+    <section class="section" aria-labelledby="order-heading">
+      <div class="wrap">
+        <h2 id="order-heading">איך מזמינים?</h2>
+        <ol class="steps">
+          <li class="step">לוחצים על המודעה בפייסבוק ומגיעים לעמוד או לחנות בטלגרם.</li>
+          <li class="step">בוחרים את המוצר שמתאים לך.</li>
+          <li class="step">משאירים פרטים או שולחים הודעה לנציג.</li>
+          <li class="step">סוגרים אספקה ותשלום מול איש הקשר.</li>
+        </ol>
+        <div class="cta-row">
+          <!-- ⚠️ PLACEHOLDER: Replace with actual Telegram store link -->
+          <a class="btn primary" href="https://t.me/PLACEHOLDER" target="_blank" rel="noopener noreferrer">לכניסה לחנות</a>
+          <!-- ⚠️ PLACEHOLDER: Replace 972000000000 with actual WhatsApp number -->
+          <a class="btn secondary" href="https://wa.me/972000000000" target="_blank" rel="noopener noreferrer">שאל שאלה לפני הזמנה</a>
+        </div>
+        <p class="notice" role="note">הבהרה: המוצרים המוצגים כאן הם תוספי תזונה. הם אינם תרופה, אינם מיועדים לאבחון/טיפול/מניעה של מחלה, ואינם תחליף לייעוץ רפואי.</p>
+      </div>
+    </section>
+
+    <!-- ────────────── Social Proof Section ────────────── -->
+    <section class="section" id="reviews" aria-labelledby="reviews-heading">
+      <div class="wrap">
+        <h2 id="reviews-heading">מה אומרים הלקוחות</h2>
+        <p class="muted">מאות גברים כבר בחרו ב-<span lang="en">VITAMAN</span></p>
+        <div class="stats-row" role="group" aria-label="סטטיסטיקות לקוחות">
+          <div class="stat-item">
+            <span class="stat-number" data-target="850" aria-label="יותר מ-850">0</span>
+            <span class="stat-suffix" aria-hidden="true">+</span>
+            <span class="stat-label">לקוחות מרוצים</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="4.8" data-decimal="true" aria-label="4.8 כוכבים">0</span>
+            <span class="stat-suffix" aria-hidden="true">⭐</span>
+            <span class="stat-label">דירוג ממוצע</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="97" aria-label="97 אחוז">0</span>
+            <span class="stat-suffix" aria-hidden="true">%</span>
+            <span class="stat-label">ממליצים לחבר</span>
+          </div>
+        </div>
+        <div class="testimonials-grid" role="list" aria-label="חוות דעת לקוחות">
+          <blockquote class="testimonial-card" role="listitem">
+            <div class="testimonial-stars" aria-label="5 מתוך 5 כוכבים" role="img">⭐⭐⭐⭐⭐</div>
+            <p>"מוצר מעולה. הרגשתי שינוי כבר אחרי השבוע הראשון. ממליץ בחום."</p>
+            <footer class="testimonial-author"><cite>— א.מ., 42, תל אביב</cite></footer>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <div class="testimonial-stars" aria-label="5 מתוך 5 כוכבים" role="img">⭐⭐⭐⭐⭐</div>
+            <p>"שירות דיסקרטי ומהיר. הגיע תוך יומיים. לא ציפיתי לאיכות כזו."</p>
+            <footer class="testimonial-author"><cite>— ד.כ., 38, חיפה</cite></footer>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <div class="testimonial-stars" aria-label="4 מתוך 5 כוכבים" role="img">⭐⭐⭐⭐</div>
+            <p>"חבילת הכוח שווה כל שקל. שני מוצרים מצוינים במחיר אחד."</p>
+            <footer class="testimonial-author"><cite>— י.ש., 51, ירושלים</cite></footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ────────────────── Footer ────────────────────────── -->
+  <!-- ⚠️ PLACEHOLDER: Replace contact info below with real values -->
+  <footer role="contentinfo">
+    <div class="wrap">
+      <span lang="en">VITAMAN</span> &copy; <span id="footer-year">2025</span>
+      &middot; <span lang="en">WhatsApp</span>: <a href="https://wa.me/972000000000" target="_blank" rel="noopener noreferrer">PLACEHOLDER</a>
+      &middot; <span lang="en">Telegram</span>: <a href="https://t.me/PLACEHOLDER" target="_blank" rel="noopener noreferrer">PLACEHOLDER</a>
+    </div>
+  </footer>
+
+  <!-- ────────────── Floating WhatsApp Button ──────────── -->
+  <!-- ⚠️ PLACEHOLDER: Replace 972000000000 with actual WhatsApp number -->
+  <a id="wa-float" href="https://wa.me/972000000000?text=היי%20אני%20מעוניין%20במוצרי%20VITAMAN" target="_blank" rel="noopener noreferrer" aria-label="שלח הודעה בוואטסאפ">
+    <svg viewBox="0 0 32 32" width="32" height="32" fill="#fff" aria-hidden="true"><path d="M16.004 0C7.176 0 .004 7.176.004 16c0 2.824.736 5.584 2.136 8.016L.004 32l8.196-2.148A15.95 15.95 0 0016.004 32C24.836 32 32 24.824 32 16S24.836 0 16.004 0zm0 29.332c-2.524 0-5-.672-7.168-1.944l-.512-.308-5.316 1.396 1.42-5.188-.336-.532A13.27 13.27 0 012.672 16c0-7.352 5.98-13.332 13.332-13.332S29.336 8.648 29.336 16s-5.98 13.332-13.332 13.332zm7.308-9.98c-.4-.2-2.368-1.168-2.736-1.3-.368-.136-.636-.2-.904.2s-1.036 1.3-1.272 1.572c-.232.268-.468.3-.868.1-.4-.2-1.688-.624-3.216-1.984-1.188-1.06-1.992-2.372-2.224-2.772-.232-.4-.024-.616.176-.816.18-.18.4-.468.6-.7.2-.232.268-.4.4-.668.136-.268.068-.5-.032-.7-.1-.2-.904-2.18-1.24-2.984-.328-.784-.66-.676-.904-.688-.232-.012-.5-.012-.768-.012s-.7.1-1.068.5c-.368.4-1.4 1.368-1.4 3.336 0 1.968 1.432 3.868 1.632 4.136.2.268 2.82 4.304 6.832 6.032.956.412 1.7.656 2.28.84.96.3 1.832.26 2.524.156.768-.116 2.368-.968 2.704-1.904.332-.936.332-1.74.232-1.904-.1-.168-.368-.268-.768-.468z"/></svg>
+  </a>
+
+  <!-- ────────────── Exit-Intent Popup ─────────────────── -->
+  <div id="exit-popup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-hidden="true">
+    <div class="popup-box">
+      <button class="popup-close" aria-label="סגור חלון קופץ">&times;</button>
+      <h3 id="popup-title">רגע לפני שאתה עוזב...</h3>
+      <p>קבל <strong>10% הנחה</strong> על ההזמנה הראשונה!</p>
+      <p class="popup-code">קוד: <strong>SAVE10</strong></p>
+      <!-- ⚠️ PLACEHOLDER: Replace with actual Telegram store link -->
+      <a class="btn primary" href="https://t.me/PLACEHOLDER" target="_blank" rel="noopener noreferrer">קח את ההנחה <span aria-hidden="true">&larr;</span></a>
+      <p class="popup-muted">תקף להזמנה ראשונה בלבד</p>
+    </div>
+  </div>
+
+  <script>
+    // ─── Dynamic Footer Year ──────────────────────────────
+    (function() {
+      var yearEl = document.getElementById('footer-year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+    })();
+
+    // ─── Counter Animation ────────────────────────────────
+    function animateCounters() {
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll('.stat-number').forEach(function(el) {
+        var target = parseFloat(el.dataset.target);
+        var isDecimal = el.dataset.decimal === 'true';
+        // Skip animation if user prefers reduced motion
+        if (prefersReducedMotion) {
+          el.textContent = isDecimal ? target.toFixed(1) : target;
+          return;
+        }
+        var duration = 2000;
+        var start = performance.now();
+        function tick(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = target * eased;
+          el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+          if (progress < 1) requestAnimationFrame(tick);
+          else el.textContent = isDecimal ? target.toFixed(1) : target;
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    // Trigger counters when scrolled into view
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          animateCounters();
+          counterObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    var reviewSection = document.getElementById('reviews');
+    if (reviewSection) counterObserver.observe(reviewSection);
+
+    // ─── Facebook Pixel Events on CTA clicks ──────────────
+    document.querySelectorAll('a.btn.primary').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var text = this.textContent.trim();
+        if (text.indexOf('\u05D4\u05D6\u05DE\u05DF') > -1 || text.indexOf('\u05E7\u05D7') > -1) {
+          if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+        } else if (text.indexOf('\u05D7\u05E0\u05D5\u05EA') > -1 || text.indexOf('\u05DB\u05E0\u05D9\u05E1\u05D4') > -1) {
+          if (typeof fbq !== 'undefined') fbq('track', 'ViewContent');
+        }
+      });
+    });
+
+    document.querySelectorAll('a.btn.secondary').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (typeof fbq !== 'undefined') fbq('track', 'Contact');
+      });
+    });
+
+    // ─── Exit Intent Popup (Accessible) ───────────────────
+    var popupShown = false;
+    var popupEl = document.getElementById('exit-popup');
+    var popupCloseBtn = popupEl.querySelector('.popup-close');
+    var lastFocused = null;
+
+    function showPopup() {
+      if (popupShown) return;
+      popupShown = true;
+      lastFocused = document.activeElement;
+      popupEl.setAttribute('aria-hidden', 'false');
+      popupEl.classList.add('is-visible');
+      popupCloseBtn.focus();
+      if (typeof fbq !== 'undefined') fbq('track', 'ViewContent', { content_name: 'exit_popup' });
+    }
+
+    function closePopup() {
+      popupEl.setAttribute('aria-hidden', 'true');
+      popupEl.classList.remove('is-visible');
+      if (lastFocused) lastFocused.focus();
+    }
+
+    // Close button
+    popupCloseBtn.addEventListener('click', closePopup);
+
+    // Close on overlay click
+    popupEl.addEventListener('click', function(e) {
+      if (e.target === popupEl) closePopup();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && popupEl.getAttribute('aria-hidden') === 'false') {
+        closePopup();
+      }
+    });
+
+    // Trap focus inside popup when open
+    popupEl.addEventListener('keydown', function(e) {
+      if (e.key !== 'Tab') return;
+      var focusable = popupEl.querySelectorAll('button, a[href], input, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length === 0) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    // Desktop: mouse leaves viewport from top
+    document.addEventListener('mouseout', function(e) {
+      if (e.clientY < 5 && !popupShown) showPopup();
+    });
+
+    // Mobile: after 45 seconds on page
+    setTimeout(function() {
+      if (!popupShown && window.innerWidth < 768) showPopup();
+    }, 45000);
+  </script>
+
+</body>
+</html>
