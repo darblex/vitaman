@@ -1904,9 +1904,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    import threading
-
-    from server import main as run_web_server
-
-    threading.Thread(target=run_web_server, daemon=True, name="web-server").start()
     main()
