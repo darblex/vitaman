@@ -22,3 +22,8 @@ LANDING_PAGE_URL = os.environ.get(
 )
 SHOP_NAME = os.environ.get("SHOP_NAME", "DrViagra Shop")
 PORT = int(os.environ.get("PORT", "8080"))
+
+USE_POLLING = os.environ.get("USE_POLLING", "0") == "1"
+WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", "")
+WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH", "/telegram/webhook")
+WEBHOOK_BASE = os.environ.get("WEBHOOK_BASE", LANDING_PAGE_URL.rstrip("/"))

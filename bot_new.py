@@ -109,7 +109,7 @@ NAME = 1
 CITY = 2
 PHONE = 3
 DELIVERY = 4
-COUPON = 7  # kept for reference, not used in flow
+COUPON = 7
 PAYMENT = 5
 PROOF = 6
 
@@ -563,7 +563,7 @@ def cancel_order_kb() -> InlineKeyboardMarkup:
 def coupon_kb() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("דלג", callback_data="coupon_skip")],
+            [InlineKeyboardButton("⏭ דלג — המשך לתשלום", callback_data="coupon_skip")],
             [InlineKeyboardButton("✖️ ביטול", callback_data="cancel_order")],
             [InlineKeyboardButton("🏪 חזרה לחנות", callback_data="menu")],
         ]
@@ -1081,7 +1081,7 @@ async def checkout_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         f"{items_lines}\n\n"
         f"💳 סה\"כ מוצרים: *₪{totals.subtotal}*{discount_line}\n\n"
         "──────────────────\n"
-        "✏️ *שלב 1/4* — מה השם המלא שלך?"
+        "✏️ *שלב 1/5* — מה השם המלא שלך?"
     )
 
     await render_text_from_callback(
@@ -1096,13 +1096,13 @@ async def checkout_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     context.user_data["name"] = update.message.text.strip()
-    await update.message.reply_text("🏙 *שלב 2/4* — באיזו עיר גרים?", reply_markup=cancel_order_kb(), parse_mode=ParseMode.MARKDOWN)
+    await update.message.reply_text("🏙 *שלב 2/5* — באיזו עיר גרים?", reply_markup=cancel_order_kb(), parse_mode=ParseMode.MARKDOWN)
     return CITY
 
 
 async def get_city(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     context.user_data["city"] = update.message.text.strip()
-    await update.message.reply_text("📱 *שלב 3/4* — מספר טלפון לאישור ומעקב:", reply_markup=cancel_order_kb(), parse_mode=ParseMode.MARKDOWN)
+    await update.message.reply_text("📱 *שלב 3/5* — מספר טלפון לאישור ומעקב:", reply_markup=cancel_order_kb(), parse_mode=ParseMode.MARKDOWN)
     return PHONE
 
 
@@ -1114,7 +1114,7 @@ async def get_phone(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return PHONE
     context.user_data["phone"] = phone
     await update.message.reply_text(
-        "🚚 *שלב 4/4* — איך תרצה לקבל את ההזמנה?",
+        "🚚 *שלב 4/5* — איך תרצה לקבל את ההזמנה?",
         reply_markup=delivery_kb(),
         parse_mode=ParseMode.MARKDOWN,
     )
@@ -1153,7 +1153,7 @@ async def _do_checkout(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
         f"{items_lines}\n\n"
         f"💳 סה\"כ: *₪{totals.subtotal}*{discount_line}\n\n"
         "──────────────────\n"
-        "✏️ *שלב 1/4* — מה השם המלא שלך?"
+        "✏️ *שלב 1/5* — מה השם המלא שלך?"
     )
     await render_text_from_callback(
         update, context, summary,
@@ -1179,11 +1179,13 @@ async def delivery_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 
     await render_text_from_callback(
         update, context,
-        f"✅ נבחר: *{label}*\n\n💳 בחר אמצעי תשלום:",
-        reply_markup=payment_kb(),
+        f"✅ נבחר: *{label}*\n\n"
+        "🎟 *שלב 5/5 — יש לך קוד קופון?*\n"
+        "שלח קוד (למשל *SAVE10* או *VIP20*) או לחץ דלג.",
+        reply_markup=coupon_kb(),
         parse_mode=ParseMode.MARKDOWN,
     )
-    return PAYMENT
+    return COUPON
 
 
 async def coupon_skip_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -1221,14 +1223,15 @@ async def get_coupon_text(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             f"✅ קוד {valid} הופעל — הנחה נוספת {pct}%!\n\n💳 איך תרצה לשלם?",
             reply_markup=payment_kb(),
         )
+        return PAYMENT
     else:
         context.user_data.pop("coupon_code", None)
         context.user_data.pop("coupon_discount", None)
         await update.message.reply_text(
-            "❌ קוד לא תקין, ממשיכים ללא הנחה\n\n💳 איך תרצה לשלם?",
-            reply_markup=payment_kb(),
+            "❌ קוד לא תקין. נסה שוב, או לחץ דלג.",
+            reply_markup=coupon_kb(),
         )
-    return PAYMENT
+        return COUPON
 
 
 def build_order_from_context(update: Update, context: ContextTypes.DEFAULT_TYPE, payment_method: str) -> Dict[str, Any]:
@@ -1854,10 +1857,7 @@ async def on_error(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     logger.exception("Unhandled bot error", exc_info=err)
 
 
-def main() -> None:
-    if not BOT_TOKEN:
-        raise SystemExit("BOT_TOKEN environment variable is required")
-
+def build_application() -> Application:
     ensure_data_files()
 
     app = ApplicationBuilder().token(BOT_TOKEN).post_init(post_init).build()
@@ -1869,11 +1869,14 @@ def main() -> None:
             CallbackQueryHandler(checkout_confirm_callback, pattern=r"^checkout_confirm$"),
         ],
         states={
-            # QTY state reserved (required by spec); not used because cart handles quantities
             NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
             CITY: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_city)],
             PHONE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_phone)],
             DELIVERY: [CallbackQueryHandler(delivery_callback, pattern=r"^delivery_")],
+            COUPON: [
+                CallbackQueryHandler(coupon_skip_callback, pattern=r"^coupon_skip$"),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, get_coupon_text),
+            ],
             PAYMENT: [CallbackQueryHandler(payment_callback, pattern=r"^pay_")],
             PROOF: [
                 MessageHandler(
@@ -1913,18 +1916,14 @@ def main() -> None:
     app.add_handler(broadcast_handler)
     app.add_handler(status_handler)
 
-    # Commands
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("faq", faq_command))
     app.add_handler(CommandHandler("contact", contact_command))
     app.add_handler(CommandHandler("myorders", myorders_command))
-
-    # Admin commands
     app.add_handler(CommandHandler("orders", orders_command))
     app.add_handler(CommandHandler("stats", stats_command))
 
-    # Callbacks
     app.add_handler(CallbackQueryHandler(menu_callback, pattern=r"^menu$"))
     app.add_handler(CallbackQueryHandler(store_callback, pattern=r"^store$"))
     app.add_handler(CallbackQueryHandler(product_callback, pattern=r"^prod_"))
@@ -1933,20 +1932,30 @@ def main() -> None:
     app.add_handler(CallbackQueryHandler(cart_callback, pattern=r"^cart$"))
     app.add_handler(CallbackQueryHandler(remove_from_cart_callback, pattern=r"^rm_"))
     app.add_handler(CallbackQueryHandler(clear_cart_callback, pattern=r"^clearcart$"))
-
     app.add_handler(CallbackQueryHandler(faq_callback, pattern=r"^faq$"))
     app.add_handler(CallbackQueryHandler(contact_callback, pattern=r"^contact$"))
     app.add_handler(CallbackQueryHandler(howitworks_callback, pattern=r"^howitworks$"))
     app.add_handler(CallbackQueryHandler(testimonials_callback, pattern=r"^testimonials$"))
-
     app.add_handler(CallbackQueryHandler(review_callback, pattern=r"^review_[A-Z0-9-]+_[1-5]$"))
     app.add_handler(CallbackQueryHandler(review_skip_callback, pattern=r"^review_skip_"))
 
     app.add_error_handler(on_error)
+    return app
 
-    print("🤖 DrViagra Shop Bot (upgraded) is running...")
+
+def main() -> None:
+    if not BOT_TOKEN:
+        raise SystemExit("BOT_TOKEN environment variable is required")
+
+    app = build_application()
+    print("🤖 DrViagra Shop Bot — polling mode (dev)")
     app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
 if __name__ == "__main__":
-    main()
+    import config as _cfg
+
+    if _cfg.USE_POLLING:
+        main()
+    else:
+        raise SystemExit("Production uses webhook via server.py — set USE_POLLING=1 for local dev.")
