@@ -2,185 +2,352 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VITAMAN — הכוח הטבעי של הגבר</title>
-  <meta name="description" content="תוסף טבעי לגברים — מורינגה, כורכום וחבילת כוח. הזמנה מהירה דרך טלגרם או וואטסאפ." />
-  <meta property="og:title" content="VITAMAN — הכוח הטבעי של הגבר" />
-  <meta property="og:description" content="פתרון טבעי, נקי וישיר לגברים שמחפשים חיוניות, אנרגיה וכוח." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>{{SHOP_NAME}} — מקורי · דיסקרטי · משלוח מהיר</title>
+  <meta name="description" content="חנות דיסקרטית לגברים — Kamagra, Vidalista וחבילות משתלמות. הזמנה ב-2 דקות דרך טלגרם. משלוח דיסקרטי לכל הארץ." />
+  <meta property="og:title" content="{{SHOP_NAME}} — הזמנה מהירה בטלגרם" />
+  <meta property="og:description" content="מוצרים מקוריים · משלוח דיסקרטי · מענה מהיר · הנחה {{DISCOUNT_PCT}}% מ-{{DISCOUNT_THRESHOLD}} חבילות" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{LANDING_URL}}/" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #111111;
-      --card: #1b1b1b;
+      --bg: #080808;
+      --card: #141414;
+      --card2: #1a1a1a;
       --gold: #d4af37;
-      --green: #2d5016;
-      --text: #f6f1e8;
-      --muted: #cbbf9e;
-      --line: rgba(212,175,55,.18);
+      --gold2: #f0cc5a;
+      --text: #f7f3ea;
+      --muted: #b8ad96;
+      --green: #3ecf6e;
+      --line: rgba(212,175,55,.16);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 20px;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: Heebo, Arial, sans-serif;
-      background: linear-gradient(180deg, #0d0d0d, #171717);
+      background: radial-gradient(ellipse at top, #151515 0%, var(--bg) 55%);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.55;
+      padding-bottom: 92px;
     }
-    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
-    .hero {
-      padding: 72px 0 48px;
-      background: radial-gradient(circle at top right, rgba(212,175,55,.12), transparent 30%);
+    .wrap { width: min(1080px, calc(100% - 28px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(8,8,8,.82);
+      border-bottom: 1px solid var(--line);
     }
-    .badge {
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0; gap: 12px;
+    }
+    .logo { font-weight: 900; font-size: 18px; letter-spacing: .3px; }
+    .logo span { color: var(--gold); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 999px;
+      background: rgba(62,207,110,.12); color: #b8f5cb;
+      border: 1px solid rgba(62,207,110,.25);
+      font-size: 13px; font-weight: 700;
+    }
+    .hero { padding: 34px 0 18px; }
+    .urgency {
       display: inline-block;
+      background: linear-gradient(90deg, rgba(212,175,55,.18), rgba(212,175,55,.05));
       border: 1px solid var(--line);
-      color: var(--gold);
+      color: var(--gold2);
       padding: 8px 14px;
       border-radius: 999px;
-      font-size: 14px;
-      margin-bottom: 18px;
-      background: rgba(212,175,55,.05);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
     }
     h1 {
-      font-size: clamp(34px, 6vw, 62px);
-      margin: 0 0 14px;
-      line-height: 1.1;
+      margin: 0 0 12px;
+      font-size: clamp(34px, 7vw, 58px);
+      line-height: 1.05;
+      font-weight: 900;
     }
-    .sub {
-      font-size: clamp(18px, 2.4vw, 24px);
+    .lead {
       color: var(--muted);
-      max-width: 760px;
-      margin-bottom: 26px;
+      font-size: clamp(17px, 2.5vw, 22px);
+      max-width: 720px;
+      margin: 0 0 22px;
     }
-    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 8px; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 22px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 700;
-      transition: .2s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 15px 22px; border-radius: 14px; text-decoration: none;
+      font-weight: 800; font-size: 16px; border: none; cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
-    .btn.primary { background: var(--gold); color: #111; }
-    .btn.secondary { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,.02); }
-    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(.98); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold2), var(--gold));
+      color: #111; box-shadow: 0 10px 30px rgba(212,175,55,.25);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin: 24px 0 8px;
+    }
+    .trust-item {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .section { padding: 28px 0; }
+    .section h2 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 36px); }
+    .section .sub { color: var(--muted); margin-bottom: 18px; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-      margin: 34px 0 18px;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
     }
     .card {
-      background: var(--card);
+      background: linear-gradient(180deg, var(--card2), var(--card));
       border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: flex; flex-direction: column;
     }
-    .card h3 { margin-top: 0; font-size: 24px; }
-    .price { color: var(--gold); font-size: 28px; font-weight: 800; margin: 10px 0; }
-    .pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: #d9f0c8;
-      background: rgba(45,80,22,.35);
-      border: 1px solid rgba(124,184,79,.2);
+    .badge {
+      align-self: flex-start;
+      font-size: 12px; font-weight: 800;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(212,175,55,.12);
+      color: var(--gold2);
+      border: 1px solid var(--line);
+      margin-bottom: 10px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 22px; }
+    .card p { margin: 0 0 14px; color: var(--muted); flex: 1; }
+    .price {
+      font-size: 30px; font-weight: 900; color: var(--gold2);
       margin-bottom: 12px;
     }
-    .section { padding: 22px 0 54px; }
-    .section h2 { font-size: 34px; margin-bottom: 8px; }
-    .muted { color: var(--muted); }
-    ul.clean { padding: 0 18px 0 0; margin: 0; }
-    .steps { counter-reset: step; display: grid; gap: 14px; margin-top: 18px; }
+    .price small { font-size: 14px; color: var(--muted); font-weight: 600; }
+    .bundle { border-color: rgba(212,175,55,.45); position: relative; overflow: hidden; }
+    .bundle::after {
+      content: "הכי נמכר";
+      position: absolute; top: 14px; left: -34px;
+      transform: rotate(-45deg);
+      background: var(--gold);
+      color: #111; font-size: 11px; font-weight: 900;
+      padding: 6px 40px;
+    }
+    .steps { display: grid; gap: 12px; }
     .step {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 16px; padding: 16px;
+    }
+    .num {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: rgba(212,175,55,.15);
+      color: var(--gold2); font-weight: 900;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    details {
       background: var(--card);
       border: 1px solid var(--line);
-      padding: 18px;
-      border-radius: 18px;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
     }
-    .notice {
-      margin-top: 30px;
+    summary { cursor: pointer; font-weight: 800; }
+    details p { color: var(--muted); margin: 10px 0 0; }
+    .reviews {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;
+    }
+    .review {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 16px; padding: 16px;
+    }
+    .stars { color: var(--gold2); letter-spacing: 1px; }
+    footer {
+      padding: 26px 0 110px;
+      color: var(--muted);
       font-size: 14px;
-      color: #d6caa9;
       border-top: 1px solid var(--line);
-      padding-top: 20px;
+      margin-top: 20px;
     }
-    footer { padding: 26px 0 38px; color: var(--muted); font-size: 14px; }
+    .sticky {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      background: rgba(8,8,8,.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    }
+    .sticky-inner {
+      width: min(1080px, 100%); margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .sticky .btn { width: 100%; padding: 14px 10px; font-size: 15px; }
+    @media (min-width: 768px) {
+      body { padding-bottom: 0; }
+      .sticky { display: none; }
+    }
   </style>
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{FB_PIXEL_ID}}');
+    fbq('track', 'PageView');
+    function trackLead(label){ try { fbq('track', 'Lead', {content_name: label}); } catch(e){} }
+    function trackContact(label){ try { fbq('track', 'Contact', {content_name: label}); } catch(e){} }
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id={{FB_PIXEL_ID}}&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="logo"><span>💊</span> {{SHOP_NAME}}</div>
+      <div class="pill">● נציג זמין עכשיו</div>
+    </div>
+  </header>
+
   <section class="hero">
     <div class="wrap">
-      <div class="badge">תוסף טבעי לגברים</div>
-      <h1>הכוח הטבעי של הגבר מתחיל בפנים</h1>
-      <p class="sub">VITAMAN מביא לך שילוב נקי, טבעי וישיר של מורינגה וכורכום — לגברים שרוצים יותר חיוניות, יותר אנרגיה ותחושה חזקה יותר ביום־יום.</p>
+      <div class="urgency">🔥 הנחה {{DISCOUNT_PCT}}% על {{DISCOUNT_THRESHOLD}}+ חבילות — היום בלבד</div>
+      <h1>הזמנה דיסקרטית.<br/>תוצאה. בלי בלגן.</h1>
+      <p class="lead">
+        מוצרים מקוריים, משלוח דיסקרטי ללא סימון, ותהליך הזמנה קצר בטלגרם.
+        בוחרים מוצר → משאירים פרטים → נציג סוגר איתך תוך דקות.
+      </p>
       <div class="cta-row">
-        <a class="btn primary" href="https://t.me/PLACEHOLDER">כניסה לחנות בטלגרם</a>
-        <a class="btn secondary" href="https://wa.me/972000000000">דבר עם נציג עכשיו</a>
+        <a class="btn btn-primary track-lead" data-label="hero_telegram" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_hero">🛒 כניסה לחנות בטלגרם</a>
+        <a class="btn btn-secondary track-contact" data-label="hero_whatsapp" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F">💬 שאלה לפני הזמנה</a>
       </div>
+      <div class="trust">
+        <div class="trust-item">✅ מוצרים מקוריים</div>
+        <div class="trust-item">📦 משלוח דיסקרטי</div>
+        <div class="trust-item">🔒 פרטיות מלאה</div>
+        <div class="trust-item">⚡ מענה מהיר</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="products">
+    <div class="wrap">
+      <h2>בחר את מה שמתאים לך</h2>
+      <p class="sub">לחץ על "הזמן בטלגרם" — נפתח ישירות על המוצר בבוט.</p>
       <div class="grid">
-        <div class="card">
-          <span class="pill">חיוניות טבעית</span>
-          <h3>VITAMAN מורינגה</h3>
-          <p>תוסף טבעי המבוסס על מורינגה, למי שמחפש יותר אנרגיה, תחושת רעננות ושגרה חזקה יותר.</p>
-          <div class="price">₪89</div>
-          <a class="btn primary" href="https://wa.me/972000000000?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20VITAMAN%20%D7%9E%D7%95%D7%A8%D7%99%D7%A0%D7%92%D7%94">הזמן עכשיו</a>
-        </div>
-        <div class="card">
-          <span class="pill">תמיכה יומיומית</span>
-          <h3>VITAMAN כורכום</h3>
-          <p>כורכום איכותי עם מיקוד בגבר שרוצה לשמור על שגרה יציבה, נוחות גופנית ותחושת עוצמה.</p>
-          <div class="price">₪89</div>
-          <a class="btn primary" href="https://wa.me/972000000000?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20VITAMAN%20%D7%9B%D7%95%D7%A8%D7%9B%D7%95%D7%9D">הזמן עכשיו</a>
-        </div>
-        <div class="card">
-          <span class="pill">החבילה המשתלמת</span>
-          <h3>חבילת כוח</h3>
-          <p>מורינגה + כורכום יחד, לגבר שרוצה פתרון טבעי אחד מסודר, פשוט ומשתלם.</p>
-          <div class="price">₪149</div>
-          <a class="btn primary" href="https://wa.me/972000000000?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%90%D7%AA%20%D7%97%D7%91%D7%99%D7%9C%D7%AA%20%D7%94%D7%9B%D7%95%D7%97">קח את החבילה</a>
-        </div>
+        <article class="card">
+          <span class="badge">⚡ פעולה מהירה</span>
+          <h3>Kamagra Oral Jelly 100mg</h3>
+          <p>7 יחידות · Jelly · מתאים למי שרוצה תוצאה מהירה ונוחות שימוש.</p>
+          <div class="price">₪89 <small>/ חבילה</small></div>
+          <a class="btn btn-primary track-lead" data-label="product_kamagra" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_kamagra">הזמן בטלגרם</a>
+        </article>
+        <article class="card">
+          <span class="badge">🕐 עד 36 שעות</span>
+          <h3>Vidalista 40mg</h3>
+          <p>10 כדורים · Tadalafil · גמישות מלאה לאורך היום.</p>
+          <div class="price">₪99 <small>/ חבילה</small></div>
+          <a class="btn btn-primary track-lead" data-label="product_vidalista" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_vidalista">הזמן בטלגרם</a>
+        </article>
+        <article class="card bundle">
+          <span class="badge">🏆 BEST VALUE</span>
+          <h3>חבילת הגבר</h3>
+          <p>Kamagra + Vidalista יחד — החבילה הכי משתלמת. חוסכים ₪19.</p>
+          <div class="price">₪169 <small>/ חבילה</small></div>
+          <a class="btn btn-primary track-lead" data-label="product_bundle" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_bundle">קח את החבילה</a>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
-      <h2>למה גברים בוחרים טבעי?</h2>
-      <p class="muted">כי לפעמים לא צריך רעש. צריך שגרה טובה, מוצרים ברורים, ומישהו שמסביר פשוט.</p>
-      <div class="grid">
-        <div class="card"><h3>בלי מסכות</h3><p>מוצר נקי, מסר נקי, תהליך קנייה קצר.</p></div>
-        <div class="card"><h3>שפה ישירה</h3><p>לא מדברים מסביב — בוחרים מוצר, משאירים פרטים, וסוגרים.</p></div>
-        <div class="card"><h3>קנייה מהירה</h3><p>פייסבוק → טלגרם → נציג → סגירה.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <h2>איך מזמינים?</h2>
+      <h2>איך זה עובד?</h2>
+      <p class="sub">4 צעדים. 2 דקות. בלי טלפונים מיותרים.</p>
       <div class="steps">
-        <div class="step"><strong>1.</strong> לוחצים על המודעה בפייסבוק ומגיעים לעמוד או לחנות בטלגרם.</div>
-        <div class="step"><strong>2.</strong> בוחרים את המוצר שמתאים לך.</div>
-        <div class="step"><strong>3.</strong> משאירים פרטים או שולחים הודעה לנציג.</div>
-        <div class="step"><strong>4.</strong> סוגרים אספקה ותשלום מול איש הקשר.</div>
+        <div class="step"><div class="num">1</div><div><strong>נכנסים לטלגרם</strong><br/><span style="color:var(--muted)">לוחצים על הכפתור — נפתח הבוט.</span></div></div>
+        <div class="step"><div class="num">2</div><div><strong>בוחרים מוצר וכמות</strong><br/><span style="color:var(--muted)">עגלה, הנחות אוטומטיות, הכל בפנים.</span></div></div>
+        <div class="step"><div class="num">3</div><div><strong>משאירים פרטים</strong><br/><span style="color:var(--muted)">שם, עיר, טלפון, אמצעי תשלום.</span></div></div>
+        <div class="step"><div class="num">4</div><div><strong>נציג סוגר</strong><br/><span style="color:var(--muted)">מעבר לוואטסאפ / סגירה בטלגרם — משלוח דיסקרטי.</span></div></div>
       </div>
-      <div class="cta-row">
-        <a class="btn primary" href="https://t.me/PLACEHOLDER">לכניסה לחנות</a>
-        <a class="btn secondary" href="https://wa.me/972000000000">שאל שאלה לפני הזמנה</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>מה לקוחות אומרים</h2>
+      <div class="reviews">
+        <div class="review"><div class="stars">★★★★★</div><p>"הזמנה מהירה, הגיע דיסקרטי, בדיוק כמו שבטחו."</p></div>
+        <div class="review"><div class="stars">★★★★★</div><p>"הבוט פשוט. בחרתי חבילה, תוך 5 דקות סגרנו."</p></div>
+        <div class="review"><div class="stars">★★★★☆</div><p>"שירות אנושי, לא רובוט. ממליץ."</p></div>
       </div>
-      <p class="notice">הבהרה: המוצרים המוצגים כאן הם תוספי תזונה. הם אינם תרופה, אינם מיועדים לאבחון/טיפול/מניעה של מחלה, ואינם תחליף לייעוץ רפואי.</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <h2>שאלות נפוצות</h2>
+      <details><summary>האם המשלוח דיסקרטי?</summary><p>כן. האריזה ללא סימון שמזהה את התוכן.</p></details>
+      <details><summary>איך משלמים?</summary><p>מזומן, ביט, פייבוקס או העברה בנקאית — לפי מה שנוח לך.</p></details>
+      <details><summary>יש הנחה על כמות?</summary><p>כן — {{DISCOUNT_PCT}}% הנחה אוטומטית מ-{{DISCOUNT_THRESHOLD}} חבילות ומעלה.</p></details>
+      <details><summary>כמה זמן לוקח לקבל?</summary><p>בדרך כלל 1–3 ימי עסקים, בתיאום מול הנציג.</p></details>
+      <details><summary>אפשר לדבר עם בן אדם?</summary><p>בטח. לחץ על וואטסאפ או שלח הודעה בטלגרם — נציג יחזור אליך.</p></details>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="card" style="text-align:center;padding:28px;">
+        <h2 style="margin-top:0;">מוכן להזמין?</h2>
+        <p class="sub" style="margin-bottom:18px;">הכי מהיר — דרך טלגרם. הכי נוח — דרך וואטסאפ.</p>
+        <div class="cta-row" style="justify-content:center;">
+          <a class="btn btn-primary track-lead" data-label="footer_telegram" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_footer">🛒 הזמן עכשיו בטלגרם</a>
+          <a class="btn btn-secondary track-contact" data-label="footer_whatsapp" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%95%D7%9B%D7%9F%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F">💬 וואטסאפ</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <footer>
     <div class="wrap">
-      VITAMAN © 2026 · WhatsApp: PLACEHOLDER · Telegram: PLACEHOLDER
+      {{SHOP_NAME}} © 2026 · טלגרם: @{{TELEGRAM_BOT}} · וואטסאפ: {{WHATSAPP_NUMBER}}<br/>
+      <small>מוצרים אלו מיועדים לשימוש אישי בלבד. אין תחליף לייעוץ רפואי.</small>
     </div>
   </footer>
+
+  <div class="sticky">
+    <div class="sticky-inner">
+      <a class="btn btn-primary track-lead" data-label="sticky_telegram" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_sticky">🛒 טלגרם</a>
+      <a class="btn btn-secondary track-contact" data-label="sticky_whatsapp" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%95%D7%9B%D7%9F%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F">💬 וואטסאפ</a>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.track-lead').forEach(function(el){
+      el.addEventListener('click', function(){ trackLead(el.dataset.label || 'lead'); });
+    });
+    document.querySelectorAll('.track-contact').forEach(function(el){
+      el.addEventListener('click', function(){ trackContact(el.dataset.label || 'contact'); });
+    });
+  </script>
 </body>
 </html>

@@ -1,9 +1,6 @@
+data/
 __pycache__/
 *.pyc
-*.pyo
-*.log
-*.png
-*.jpg
-*.jpeg
-*.webp
-data/
+.env
+.venv/
+venv/

@@ -1,25 +1,38 @@
-# VITAMAN Starter Kit
+# VITAMAN / DrViagra Shop — Railway Stack
 
-Created files:
-- `BRAND.md` — brand, positioning, products, prices
-- `index.html` — landing page
-- `TELEGRAM_STORE.md` — Telegram bot/channel/store structure
-- `FACEBOOK_ADS.md` — ad copy and creative directions
+Unified marketing funnel: **landing page + Telegram bot** in one deploy.
 
-## Replace these placeholders first
-- `PLACEHOLDER` Telegram username
-- `972000000000` WhatsApp number
-- Final prices
-- Delivery/payment wording
+## Stack
+- `index.html` — high-conversion Hebrew landing (FB Pixel, sticky CTA, product deep links)
+- `server.py` — aiohttp web on `PORT` (fixes Railway 502)
+- `bot_new.py` — Telegram store bot (cart, checkout, admin, reminders)
+- `start.sh` — runs web + bot together
+- `config.py` — all secrets from environment
 
-## Fastest launch order
-1. Open `index.html` and replace contact links
-2. Create Telegram bot via @BotFather
-3. Copy menu text from `TELEGRAM_STORE.md`
-4. Publish landing page
-5. Launch Facebook ads to landing page or bot
+## Env vars (Railway)
+| Var | Purpose |
+|-----|---------|
+| `BOT_TOKEN` | Telegram bot token |
+| `FB_PIXEL_ID` | Meta Pixel |
+| `WHATSAPP_NUMBER` | e.g. 972523288147 |
+| `SELLER_CHAT_ID` | Admin Telegram ID |
+| `TELEGRAM_BOT_USERNAME` | e.g. DrViagrashop_Bot |
+| `DATA_DIR` | `/data` (persistent volume) |
+| `LANDING_PAGE_URL` | Public URL for OG tags |
 
-## Suggested immediate next move
-If you want a same-day launch:
-- Use the landing page + WhatsApp first
-- Add Telegram bot after the first sales
+## Local dev
+```bash
+pip install -r requirements.txt
+export BOT_TOKEN=... PORT=8080
+bash start.sh
+```
+
+## Deploy
+```bash
+railway link  # project vitaman
+railway up --detach
+curl -fsS https://vitaman-production.up.railway.app/health
+```
+
+## Marketing deep links
+Landing → `t.me/Bot?start=fb_kamagra` opens product directly in bot.

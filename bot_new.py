@@ -47,20 +47,18 @@ from telegram.ext import (
     filters,
 )
 
-# ─── CONFIG ───────────────────────────────────────────────────
-BOT_TOKEN = "8798178533:AAHE2xfhNScv9Mo1V4FVS1IAL746opPR858"
-SELLER_CHAT_ID = 400023112
-SELLER_USERNAME = "Darblex"
-WHATSAPP_NUMBER = "972523288147"
-
-REMINDER_DELAY_SECONDS = 3600
-MAX_QTY = 5
-DISCOUNT_THRESHOLD = 3
-DISCOUNT_PCT = 10
-# ──────────────────────────────────────────────────────────────
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+from config import (
+    BASE_DIR,
+    BOT_TOKEN,
+    DATA_DIR,
+    DISCOUNT_PCT,
+    DISCOUNT_THRESHOLD,
+    MAX_QTY,
+    REMINDER_DELAY_SECONDS,
+    SELLER_CHAT_ID,
+    SELLER_USERNAME,
+    WHATSAPP_NUMBER,
+)
 USERS_FILE = os.path.join(DATA_DIR, "users.json")
 ORDERS_FILE = os.path.join(DATA_DIR, "orders.json")
 REVIEWS_FILE = os.path.join(DATA_DIR, "reviews.json")
@@ -716,6 +714,17 @@ async def post_init(app: Application) -> None:
     await app.bot.set_my_commands(commands)
 
 
+def _resolve_start_product(args: List[str]) -> Optional[str]:
+    if not args:
+        return None
+    payload = args[0].lower().strip()
+    for prefix in ("fb_", "ig_", "lp_", "ad_", "src_"):
+        if payload.startswith(prefix):
+            payload = payload[len(prefix):]
+    payload = payload.replace("prod_", "")
+    return payload if payload in PRODUCTS else None
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     register_user(update.effective_user)
 
@@ -723,6 +732,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     cart = cart_get(context)
     context.user_data.clear()
     context.user_data["cart"] = cart
+
+    product_key = _resolve_start_product(context.args or [])
+    if product_key:
+        p = PRODUCTS[product_key]
+        caption = (
+            f"{p['emoji']} *{p['name']}*\n\n"
+            f"{p['desc']}\n\n"
+            f"💊 חבילה אחת = *{p['pills_per_pack']} יחידות*\n"
+            f"💰 מחיר: *₪{p['base_price']}*\n\n"
+            f"🏷 *קונים {DISCOUNT_THRESHOLD}+ חבילות? {DISCOUNT_PCT}% הנחה!*"
+        )
+        img_path = p.get("image", "")
+        if img_path and os.path.exists(img_path):
+            with open(img_path, "rb") as img_file:
+                await update.message.reply_photo(
+                    photo=img_file,
+                    caption=caption,
+                    parse_mode=ParseMode.MARKDOWN,
+                    reply_markup=product_kb(product_key, context),
+                )
+        else:
+            await update.message.reply_text(
+                caption,
+                parse_mode=ParseMode.MARKDOWN,
+                reply_markup=product_kb(product_key, context),
+            )
+        return
 
     await update.message.reply_text(
         build_splash_text(),
@@ -1776,6 +1812,9 @@ async def cancel_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 
 
 def main() -> None:
+    if not BOT_TOKEN:
+        raise SystemExit("BOT_TOKEN environment variable is required")
+
     ensure_data_files()
 
     app = ApplicationBuilder().token(BOT_TOKEN).post_init(post_init).build()
