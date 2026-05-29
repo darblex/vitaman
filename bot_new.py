@@ -35,7 +35,7 @@ from telegram import (
     Update,
 )
 from telegram.constants import ParseMode
-from telegram.error import BadRequest
+from telegram.error import BadRequest, Conflict, NetworkError, TimedOut
 from telegram.ext import (
     Application,
     ApplicationBuilder,
@@ -463,7 +463,7 @@ def main_menu_kb(context: Optional[ContextTypes.DEFAULT_TYPE] = None) -> InlineK
         [
             [InlineKeyboardButton("💊 Kamagra Oral Jelly", callback_data="prod_kamagra")],
             [InlineKeyboardButton("🐎 Vidalista 40mg", callback_data="prod_vidalista")],
-            [InlineKeyboardButton("💪 Bundle — Kamagra + Vidalista", callback_data="prod_bundle")],
+            [InlineKeyboardButton("💪 חבילת הגבר — Kamagra + Vidalista", callback_data="prod_bundle")],
             [InlineKeyboardButton(cart_label, callback_data="cart")],
             [InlineKeyboardButton("❓ שאלות", callback_data="faq"),
              InlineKeyboardButton("📞 צור קשר", callback_data="contact")],
@@ -482,6 +482,7 @@ def product_kb(key: str, context: ContextTypes.DEFAULT_TYPE) -> InlineKeyboardMa
     p = PRODUCTS[key]
     rows: List[List[InlineKeyboardButton]] = []
     rows.append([InlineKeyboardButton(f"🛒 הזמן עכשיו — ₪{p['base_price']}", callback_data=f"qty_{key}")])
+    rows.append([InlineKeyboardButton("➕ הוסף חבילה 1 לסל", callback_data=f"addcart_{key}_1")])
     rows.append([InlineKeyboardButton("🛒 לסל הקניות שלי", callback_data="cart")])
 
     # Upsell
@@ -520,8 +521,20 @@ def cart_kb(context: ContextTypes.DEFAULT_TYPE) -> InlineKeyboardMarkup:
     cart = cart_get(context)
     rows: List[List[InlineKeyboardButton]] = []
 
+    for key, qty in cart.items():
+        p = PRODUCTS[key]
+        rows.append(
+            [
+                InlineKeyboardButton(
+                    f"❌ הסר {p['emoji']} ({qty})",
+                    callback_data=f"rm_{key}",
+                )
+            ]
+        )
+
     if cart:
         rows.append([InlineKeyboardButton("💳 לתשלום", callback_data="checkout")])
+        rows.append([InlineKeyboardButton("🗑 רוקן את הסל", callback_data="clearcart")])
 
     rows.append([InlineKeyboardButton("🏠 חזרה לחנות", callback_data="menu")])
     return InlineKeyboardMarkup(rows)
@@ -562,6 +575,7 @@ PAYMENT_ICONS = {"מזומן": "💵", "ביט": "📲", "פייבוקס": "💸
 def payment_kb() -> InlineKeyboardMarkup:
     rows = [[InlineKeyboardButton(f"{PAYMENT_ICONS.get(opt,'💳')} {opt}", callback_data=f"pay_{opt}")] for opt in PAYMENT_OPTIONS]
     rows.append([InlineKeyboardButton("✖️ ביטול", callback_data="cancel_order")])
+    rows.append([InlineKeyboardButton("🏪 חזרה לחנות", callback_data="menu")])
     return InlineKeyboardMarkup(rows)
 
 
@@ -712,6 +726,15 @@ async def post_init(app: Application) -> None:
         BotCommand("statusupdate", "אדמין: עדכון סטטוס הזמנה"),
     ]
     await app.bot.set_my_commands(commands)
+    try:
+        await app.bot.set_my_description(
+            "💊 DrViagra Shop — חנות דיסקרטית לגברים.\n"
+            "מוצרים מקוריים · משלוח דיסקרטי · הזמנה מהירה בכמה לחיצות.\n"
+            "לחץ /start להתחיל."
+        )
+        await app.bot.set_my_short_description("הזמנה מהירה · משלוח דיסקרטי · מענה אנושי")
+    except Exception as e:
+        logger.warning("Could not set bot profile text: %s", e)
 
 
 def _resolve_start_product(args: List[str]) -> Optional[str]:
@@ -838,8 +861,8 @@ async def store_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await render_text_from_callback(
         update,
         context,
-        STORE_TEXT,
-        reply_markup=main_menu_kb(context),
+        build_splash_text(),
+        reply_markup=splash_kb(),
         parse_mode=ParseMode.MARKDOWN,
     )
 
@@ -1042,7 +1065,7 @@ async def checkout_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             "──────────────────\n"
             "👍 *חבילת הגבר* — Kamagra + Vidalista\n"
             f"₪{bundle_price} בלבד (חוסכ ₪{saving}!)\n\n"
-            "משלוח ציוד להשוואה או להמשיך עם הבחירה הנוכחית:"
+            "המשך עם הבחירה הנוכחית או שדרג לחבילה:"
         )
         upsell_kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💪 שדרג לחבילת הגבר — ₪{}".format(bundle_price), callback_data="upsell_bundle")],
@@ -1307,7 +1330,7 @@ def order_user_summary(order: Dict[str, Any]) -> str:
         "🕒  *מה קורה עכשיו?*",
         "1️⃣  נציג צור קשר אליך לאישור הזמנה",
         "2️⃣  נארז ושלח בדיסקרטיות",
-        "3️⃣  תקבל סווס מספר מעקב",
+        "3️⃣  תקבל עדכון SMS / וואטסאפ",
         "",
         "תודה 🙏",
     ]
@@ -1373,6 +1396,12 @@ async def finalize_order(
         text=summary_text,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=kb,
+    )
+
+    await context.bot.send_message(
+        chat_id=update.effective_user.id,
+        text="⭐ איך הייתה החוויה? דירוג קצר עוזר לנו:",
+        reply_markup=review_kb(order["order_id"]),
     )
 
     # Seller notification
@@ -1489,8 +1518,8 @@ async def cancel_order_callback(update: Update, context: ContextTypes.DEFAULT_TY
 async def review_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     await query.answer()
-    _, order_id, rating = query.data.split("_")
-    rating_i = int(rating)
+    order_id, rating_i = query.data[len("review_"):].rsplit("_", 1)
+    rating_i = int(rating_i)
 
     review = {
         "order_id": order_id,
@@ -1811,6 +1840,20 @@ async def cancel_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 # ─── MAIN ─────────────────────────────────────────────────────
 
 
+async def on_error(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    err = context.error
+    if isinstance(err, Conflict):
+        logger.warning("Polling conflict — only one bot instance should run: %s", err)
+        return
+    if isinstance(err, (NetworkError, TimedOut)):
+        logger.warning("Telegram network issue: %s", err)
+        return
+    if isinstance(err, BadRequest) and update and getattr(update, "effective_message", None):
+        logger.warning("BadRequest: %s", err)
+        return
+    logger.exception("Unhandled bot error", exc_info=err)
+
+
 def main() -> None:
     if not BOT_TOKEN:
         raise SystemExit("BOT_TOKEN environment variable is required")
@@ -1899,8 +1942,10 @@ def main() -> None:
     app.add_handler(CallbackQueryHandler(review_callback, pattern=r"^review_[A-Z0-9-]+_[1-5]$"))
     app.add_handler(CallbackQueryHandler(review_skip_callback, pattern=r"^review_skip_"))
 
+    app.add_error_handler(on_error)
+
     print("🤖 DrViagra Shop Bot (upgraded) is running...")
-    app.run_polling()
+    app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
 if __name__ == "__main__":
