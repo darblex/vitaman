@@ -75,27 +75,27 @@ logger = logging.getLogger(__name__)
 # ─── PRODUCTS ─────────────────────────────────────────────────
 PRODUCTS: Dict[str, Dict[str, Any]] = {
     "kamagra": {
-        "name": "Kamagra Oral Jelly 100mg",
+        "name": "קמגרה אורל ג׳ל 100 מ״ג",
         "emoji": "💊",
-        "desc": "Sildenafil Oral Jelly 100mg\n\n⏱ פעולה מהירה תוך 15 דקות\n🍊 טעמים מגוונים, נוח לשימוש\n📦 משלוח דיסקרטי ללא סימון\n✅ מוצר מקורי — תוצאות מוכחות",
+        "desc": "7 יחידות ג׳ל · מתאים למי שרוצה תוצאה מהירה ונוחות שימוש.\n\n⏱ פעולה מהירה\n🍊 טעמים מגוונים, נוח לשימוש\n📦 משלוח דיסקרטי ללא סימון\n✅ מוצר מקורי",
         "pills_per_pack": 7,
-        "base_price": 89,
+        "base_price": 200,
         "image": os.path.join(BASE_DIR, "images", "product1.jpg"),
     },
     "vidalista": {
-        "name": "Vidalista 40mg (Tadalafil)",
+        "name": "סיאליס וידליסטה 60 מ״ג",
         "emoji": "🐎",
-        "desc": "Tadalafil 40mg\n\n⏳ פעיל עד *36 שעות* — גמישות מלאה\n💊 כדור קטן, קל לבליעה\n📦 משלוח דיסקרטי ללא סימון\n✅ מוצר מקורי — הפתרון האמין",
+        "desc": "10 כדורים · Tadalafil · גמישות מלאה לאורך היום.\n\n⏳ עד *36 שעות*\n💊 כדור קטן, קל לבליעה\n📦 משלוח דיסקרטי ללא סימון\n✅ מוצר מקורי",
         "pills_per_pack": 10,
-        "base_price": 99,
+        "base_price": 250,
         "image": os.path.join(BASE_DIR, "images", "product2.jpg"),
     },
     "bundle": {
-        "name": "חבילת הגבר — Kamagra + Vidalista",
+        "name": "חבילת הגבר — קמגרה + וידליסטה",
         "emoji": "💪",
-        "desc": "Kamagra Jelly + Vidalista 40 יחד\n\n✅ ניסוי מלא — פעולה מהירה + טווח ארוך\n💰 חוסכים ₪19 לעומת קנייה נפרדת\n📦 משלוח דיסקרטי ללא סימון\n🏆 החבילה הכי נמכרת",
+        "desc": "קמגרה ג׳ל + וידליסטה יחד\n\n✅ פעולה מהירה + טווח ארוך\n💰 חבילת שילוב משתלמת\n📦 משלוח דיסקרטי ללא סימון\n🏆 החבילה הכי נמכרת",
         "pills_per_pack": 17,
-        "base_price": 169,
+        "base_price": 400,
         "image": os.path.join(BASE_DIR, "images", "product1.jpg"),
     },
 }
@@ -461,9 +461,9 @@ def main_menu_kb(context: Optional[ContextTypes.DEFAULT_TYPE] = None) -> InlineK
 
     return InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("💊 Kamagra Oral Jelly", callback_data="prod_kamagra")],
-            [InlineKeyboardButton("🐎 Vidalista 40mg", callback_data="prod_vidalista")],
-            [InlineKeyboardButton("💪 חבילת הגבר — Kamagra + Vidalista", callback_data="prod_bundle")],
+            [InlineKeyboardButton("💊 קמגרה אורל ג׳ל", callback_data="prod_kamagra")],
+            [InlineKeyboardButton("🐎 סיאליס וידליסטה", callback_data="prod_vidalista")],
+            [InlineKeyboardButton("💪 חבילת הגבר — קמגרה + וידליסטה", callback_data="prod_bundle")],
             [InlineKeyboardButton(cart_label, callback_data="cart")],
             [InlineKeyboardButton("❓ שאלות", callback_data="faq"),
              InlineKeyboardButton("📞 צור קשר", callback_data="contact")],
@@ -490,7 +490,7 @@ def product_kb(key: str, context: ContextTypes.DEFAULT_TYPE) -> InlineKeyboardMa
         rows.append(
             [
                 InlineKeyboardButton(
-                    "💰 קנה את השניים יחד וחסוך! → חבילת הגבר ₪169",
+                    "💰 קנה את השניים יחד וחסוך! → חבילת הגבר ₪400",
                     callback_data="prod_bundle",
                 )
             ]
@@ -811,9 +811,9 @@ async def faq_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     text = (
         "❓ שאלות נפוצות\n\n"
         "מה יש בחנות?\n"
-        "Kamagra Oral Jelly 100mg, Vidalista 40mg, וחבילת שילוב משתלמת.\n\n"
+        "קמגרה אורל ג׳ל 100 מ״ג, סיאליס וידליסטה 60 מ״ג, וחבילת שילוב משתלמת.\n\n"
         "כמה יחידות יש במוצר?\n"
-        "Kamagra: 7 יחידות | Vidalista: 10 כדורים | חבילת הגבר: 17 יחידות סה״כ.\n\n"
+        "קמגרה: 7 יחידות ג׳ל | וידליסטה: 10 כדורים | חבילת הגבר: 17 יחידות סה״כ.\n\n"
         "יש הנחה?\n"
         "כן — מ-3 חבילות ומעלה יש 10% הנחה אוטומטית.\n\n"
         "איך מזמינים?\n"
@@ -1063,7 +1063,7 @@ async def checkout_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             f"בחרת: {list(cart.keys())[0] and PRODUCTS[list(cart.keys())[0]]['emoji']} {PRODUCTS[list(cart.keys())[0]]['name']}\n"
             f"מחיר: *₪{single_price}*\n\n"
             "──────────────────\n"
-            "👍 *חבילת הגבר* — Kamagra + Vidalista\n"
+            "👍 *חבילת הגבר* — קמגרה + וידליסטה\n"
             f"₪{bundle_price} בלבד (חוסכ ₪{saving}!)\n\n"
             "המשך עם הבחירה הנוכחית או שדרג לחבילה:"
         )
@@ -1588,7 +1588,7 @@ async def testimonials_callback(update: Update, context: ContextTypes.DEFAULT_TY
         'ד. מתל אביב: \"Kamagra עובד מהר. תוך 15 דקות הרגשתי שינוי. ממליץ.\"\n\n'
         'א. מחיפה: \"Vidalista — 36 שעות זה לא בדיחה. מוצר אמיתי.\"\n\n'
         'מ. מירושלים: \"\u05d4זמנתי את החבילה. המחיר שווה והכל הגיע דיסקרטי.\"\n\n'
-        'ר. מבאר שבע: \"\u05e7ניתי פעם שנייה. שירות אדיב, משלוח מהיר.\"'
+        'ר. מבאר שבע: \"קניתי פעם שנייה. שירות אדיב, משלוח מהיר.\"'
         f"{rating_block}"
     )
     await render_text_from_callback(update, context, text, reply_markup=back_to_menu_kb(), parse_mode=ParseMode.MARKDOWN)
@@ -1605,9 +1605,9 @@ async def faq_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     text = (
         "❓ *שאלות נפוצות*\n\n"
         "*מה יש בחנות?*\n"
-        "Kamagra Oral Jelly 100mg, Vidalista 40mg, וחבילת שילוב משתלמת.\n\n"
+        "קמגרה אורל ג׳ל 100 מ״ג, סיאליס וידליסטה 60 מ״ג, וחבילת שילוב משתלמת.\n\n"
         "*כמה יחידות יש במוצר?*\n"
-        "Kamagra: 7 יחידות | Vidalista: 10 כדורים | חבילת הגבר: 17 יחידות סה״כ.\n\n"
+        "קמגרה: 7 יחידות ג׳ל | וידליסטה: 10 כדורים | חבילת הגבר: 17 יחידות סה״כ.\n\n"
         "*יש הנחה?*\n"
         "כן — מ-3 חבילות ומעלה יש 10% הנחה אוטומטית.\n\n"
         "*איך מזמינים?*\n"
