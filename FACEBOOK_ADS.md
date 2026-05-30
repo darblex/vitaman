@@ -1,85 +1,52 @@
-# VITAMAN — Facebook Ad Copy
+# Facebook / Meta Ads Notes
 
-## Rules
-- Do **not** mention prescription drugs or compare yourself to them
-- Keep it in the world of natural vitality, energy, routine, premium supplements
-- Avoid medical claims
+## Current positioning
 
----
+DrViagra Shop is positioned as a discreet Telegram ordering funnel for men, with fast human follow-up and simple checkout.
 
-## Ad Variation 1 — Direct
-**Primary text:**
-מחפש פתרון טבעי, נקי ופשוט לגבר שרוצה להרגיש יותר חיוני ביום־יום?
+## Tracking
 
-הכירו את **VITAMAN** — תוספי מורינגה וכורכום לגברים שרוצים יותר אנרגיה, יותר שגרה, יותר עוצמה.
+Landing page uses Meta Pixel placeholder `{{FB_PIXEL_ID}}`, rendered from Railway env `FB_PIXEL_ID`.
 
-✔️ פשוט
-✔️ טבעי
-✔️ הזמנה מהירה דרך טלגרם
+Events currently fired:
+- `PageView`
+- `Lead` on Telegram CTA clicks
+- `Contact` on WhatsApp CTA clicks
 
-**Headline:**
-הכוח הטבעי של הגבר
+## Deep links
 
-**CTA:**
-שלח הודעה
+Use product-specific links so the bot opens the right screen:
 
----
+```text
+https://t.me/DrViagrashop_Bot?start=fb_kamagra
+https://t.me/DrViagrashop_Bot?start=fb_vidalista
+https://t.me/DrViagrashop_Bot?start=fb_bundle
+https://t.me/DrViagrashop_Bot?start=fb_hero
+```
 
-## Ad Variation 2 — Premium
-**Primary text:**
-לא כל גבר מחפש רעש. יש כאלה שמחפשים איכות.
+## Safer ad copy direction
 
-**VITAMAN** נבנה לגברים שמעדיפים תוסף טבעי, שפה ישירה ומסלול הזמנה קצר בלי בלגן.
+Avoid strong medical claims and guaranteed outcomes. Keep copy around:
+- discreet ordering
+- simple process
+- fast human response
+- clear prices
+- private packaging
 
-לחץ, בחר מוצר, ודבר עם נציג.
+Example:
 
-**Headline:**
-תוסף טבעי לגברים — VITAMAN
+```text
+הזמנה דיסקרטית לגברים דרך טלגרם.
+בוחרים מוצר, משאירים פרטים, ונציג חוזר אליך לסגירה מהירה.
+משלוח דיסקרטי, תהליך קצר וברור.
+```
 
-**CTA:**
-מידע נוסף
+## Operational KPI
 
----
-
-## Ad Variation 3 — Offer Bundle
-**Primary text:**
-רוצה להתחיל נכון?
-
-עם **חבילת הכוח של VITAMAN** אתה מקבל מורינגה + כורכום יחד במחיר משתלם.
-
-כניסה מהירה לחנות בטלגרם, בחירת מוצר, וסגירה מול נציג.
-
-**Headline:**
-חבילת כוח טבעית לגברים
-
-**CTA:**
-קנה עכשיו
-
----
-
-## Creative Ideas
-### Image 1
-Black background + gold text:
-`הכוח הטבעי של הגבר`
-Subtext:
-`מורינגה | כורכום | חבילת כוח`
-
-### Image 2
-Product mockup + short copy:
-`פשוט. טבעי. גברי.`
-
-### Image 3
-Offer creative:
-`2 מוצרים | מסלול הזמנה קצר | נציג זמין`
-
----
-
-## Targeting Ideas
-- Men 30-55
-- Interests: supplements, fitness, wellness, natural products
-- Retarget people who clicked but didn't message
-
-## Funnel Notes
-Best CTA objective at start:
-- Messages / WhatsApp / Telegram click
-- Not broad conversion campaigns at day 1
+- Landing CTR to Telegram
+- Telegram `/start` count
+- Product page clicks
+- Cart starts
+- Checkout completions
+- WhatsApp handoff rate
+- Closed orders by seller

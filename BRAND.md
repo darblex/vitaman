@@ -1,47 +1,42 @@
-# VITAMAN — Brand Document
+# Brand / Copy Guide
 
-## Brand Name
-**VITAMAN** (ויטאמן)
-Tagline: **הכוח הטבעי של הגבר**
+## Active brand
 
-## Products
-| Product | Ingredients | Benefit | Price |
-|---------|------------|---------|-------|
-| VITAMAN מורינגה | מורינגה טהורה | אנרגיה, חיוניות, סיבולת | ₪89 |
-| VITAMAN כורכום | כורכום + פיפרין | כוח, התאוששות, דלקתיות | ₪89 |
-| חבילת כוח (שניהם) | מורינגה + כורכום | הפתרון המלא | ₪149 |
+- Public shop name: `DrViagra Shop`
+- Legacy project name: `vitaman`
+- Tone: direct, discreet, simple, masculine, practical
 
-## Visual Identity
-- **Primary Color:** #1A1A1A (שחור עמוק)
-- **Accent:** #D4AF37 (זהב)
-- **Secondary:** #2D5016 (ירוק כהה — טבעי)
-- **Font:** Heebo (Hebrew), Montserrat (English)
-- **Style:** מינימליסטי, גברי, פרימיום
+## Visual style
 
-## Tone of Voice
-- ישיר, גברי, בלי שטויות
-- מדבר על תוצאות, לא על מדע מסובך
-- "טבעי" לא אומר "חלש" — זה אומר "חכם"
-- לא מבטיחים ריפוי רפואי — מדברים על אנרגיה, כוח, חיוניות
+- Dark background
+- Gold accent
+- Hebrew RTL-first
+- Mobile-first landing
+- Clear CTAs to Telegram and WhatsApp
 
-## Target Audience
-- גברים 30-55
-- מחפשים פתרון טבעי
-- לא רוצים כימיקלים
-- מוכנים לשלם פרימיום על איכות
+## Copy rules
 
-## Funnel
+Use:
+- “הזמנה דיסקרטית”
+- “תהליך קצר וברור”
+- “מענה אנושי”
+- “משלוח דיסקרטי”
+- “מומלץ להתייעץ עם רופא/רוקח”
+
+Avoid:
+- guaranteed outcomes
+- cure/treatment claims
+- exaggerated medical claims
+- fake testimonials about exact medical effects
+- “100% guaranteed” style promises
+
+## Product pages
+
+Products are managed in `bot_new.py` and reflected on `index.html`.
+
+When changing prices or product names, update both places and run:
+
+```bash
+python3 -m compileall -q .
+python3 qa_full.py
 ```
-Facebook Ad → Landing Page / Telegram Store → Contact Person → Sale
-```
-
-## Legal Notes
-- אין טענות רפואיות
-- "תוסף תזונה" — לא "תרופה"
-- אין שימוש בשמות תרופות קיימות
-- חובה: "אין תחליף לייעוץ רפואי"
-
-## Contact (UPDATE THESE)
-- WhatsApp: PLACEHOLDER
-- Telegram: PLACEHOLDER
-- Phone: PLACEHOLDER

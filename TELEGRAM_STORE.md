@@ -1,117 +1,61 @@
-# VITAMAN — Telegram Store Blueprint
+# Telegram Store Blueprint — Current Version
 
-## Best Structure
-**Facebook Ads → Landing Page or Direct Telegram → Telegram Bot/Menu → Human Seller**
+## Funnel
 
-## Recommended Telegram Setup
-### Option A — Fastest (recommended now)
-1. Create a **Telegram channel** named: `VITAMAN | חנות טבעית לגברים`
-2. Create a **Telegram bot** via @BotFather
-3. Put the bot link in the Facebook ad and landing page
-4. Bot shows menu and forwards buyer to your sales contact
+```text
+Landing / Ads → Telegram deep link → Bot splash → Store → Product → Cart → Checkout → Human closing
+```
 
----
+## Live links
 
-## Bot Menu Flow
-### Welcome message
-שלום וברוך הבא ל-**VITAMAN** 💪
+- Landing: https://vitaman-production.up.railway.app
+- Bot: https://t.me/DrViagrashop_Bot
 
-כאן תוכל לבחור את המוצר שמתאים לך:
+## Main menu
 
-1. מורינגה — ₪89
-2. כורכום — ₪89
-3. חבילת כוח — ₪149
-4. שאלות נפוצות
-5. דבר עם נציג
+- Kamagra Oral Jelly
+- Vidalista
+- Bundle
+- Cart
+- FAQ
+- Contact
 
----
+## Checkout fields
 
-## Button Copy
-### Main buttons
-- מורינגה
-- כורכום
-- חבילת כוח
-- שאלות נפוצות
-- דבר עם נציג
+1. Name
+2. City
+3. Phone
+4. Delivery method
+5. Coupon
+6. Payment method
+7. Optional payment proof screenshot/document for non-cash payments
 
-### Product: מורינגה
-**VITAMAN מורינגה**
+## Admin closeout
 
-תוסף טבעי לגברים שמחפשים יותר חיוניות, אנרגיה ושגרה חזקה יותר.
+After checkout, the bot sends a structured order to `SELLER_CHAT_ID` with:
+- Order ID
+- Customer Telegram details
+- Cart lines
+- Delivery choice
+- Payment choice
+- Customer contact details
+- Total price
 
-מחיר: **₪89**
+The customer also gets a WhatsApp CTA to continue with the seller.
 
-לביצוע הזמנה לחץ למטה.
+## Discount logic
 
-Buttons:
-- הזמן עכשיו
-- חזור לתפריט
+- Automatic discount: `DISCOUNT_PCT` when quantity reaches `DISCOUNT_THRESHOLD`
+- Coupons from `data/coupons.json` / `/data/coupons.json`
 
-### Product: כורכום
-**VITAMAN כורכום**
+Default coupons:
+- `SAVE10` — 10%
+- `VIP20` — 20%
 
-תוסף טבעי לגברים שמחפשים תמיכה יומיומית ותחושת יציבות בשגרה.
+## Copy notes
 
-מחיר: **₪89**
-
-Buttons:
-- הזמן עכשיו
-- חזור לתפריט
-
-### Product: חבילת כוח
-**חבילת הכוח של VITAMAN**
-
-מורינגה + כורכום במחיר משתלם.
-
-מחיר: **₪149**
-
-Buttons:
-- הזמן עכשיו
-- חזור לתפריט
-
----
-
-## Cash / Manual Payment Flow
-If you want manual closing instead of instant payment:
-
-### Button: הזמן עכשיו
-Message to buyer:
-מעולה. כדי להשלים את ההזמנה, שלח עכשיו את הפרטים הבאים:
-
-- שם מלא
-- עיר
-- טלפון
-- המוצר שבחרת
-- אמצעי תשלום מועדף: מזומן / ביט / פייבוקס / העברה
-
-לאחר מכן נציג יחזור אליך לסגירה.
-
-### Forward to seller
-You can route them to:
-- Telegram username: `@PLACEHOLDER`
-- WhatsApp: `https://wa.me/972000000000`
-
----
-
-## FAQ Section
-### שאלות נפוצות
-**מה זה?**
-תוספי תזונה טבעיים לגברים.
-
-**איך מזמינים?**
-בוחרים מוצר, משאירים פרטים, ונציג חוזר אליך.
-
-**יש משלוח?**
-כן / איסוף / בהתאם למה שתקבע.
-
-**איך משלמים?**
-מזומן, ביט, פייבוקס או בתיאום מול הנציג.
-
----
-
-## What you still need to replace
-- Bot username
-- Seller Telegram username
-- WhatsApp number
-- Delivery wording
-- Final prices if different
+Keep the bot direct and conversion-focused, but avoid risky medical promises:
+- do not promise treatment/cure
+- do not guarantee outcome
+- do not invent medical authority
+- use “מומלץ להתייעץ עם רופא/רוקח” when relevant

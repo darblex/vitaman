@@ -9,10 +9,14 @@ import re
 import json
 import subprocess
 import sys
+import urllib.request
+from pathlib import Path
 
-BOT_FILE = os.path.join(os.path.dirname(__file__), "bot_new.py")
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-IMAGES_DIR = os.path.join(os.path.dirname(__file__), "images")
+BASE_DIR = os.path.dirname(__file__)
+BOT_FILE = os.path.join(BASE_DIR, "bot_new.py")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+IMAGES_DIR = os.path.join(BASE_DIR, "images")
+INDEX_FILE = os.path.join(BASE_DIR, "index.html")
 
 results = []
 
@@ -206,10 +210,12 @@ def main():
         check("Abandoned reminder exists", False, "bot_new.py missing")
 
     # ── 16. Data files exist ─────────────────────────────────────────────────
-    data_files = {
-        "coupons.json": os.path.join(DATA_DIR, "coupons.json"),
-        "orders.json or similar": None,  # checked separately
-    }
+    try:
+        from bot_new import ensure_data_files
+        ensure_data_files()
+    except Exception as e:
+        check("Data bootstrap runs", False, str(e))
+
     coupons_ok = os.path.exists(os.path.join(DATA_DIR, "coupons.json"))
     # Check for any orders data file
     orders_ok = any(
@@ -227,21 +233,32 @@ def main():
         "orders.json/orders.db/data.json found" if orders_ok else "no orders file yet (will be created at runtime)"
     )
 
-    # ── 17. Bot process check ────────────────────────────────────────────────
+    # ── 17. Landing template sanity ──────────────────────────────────────────
     try:
-        result = subprocess.run(
-            ["pgrep", "-f", "bot_new.py|bot.py"],
-            capture_output=True, text=True
-        )
-        running = result.returncode == 0
-        pids = result.stdout.strip()
+        from server import render_landing
+        html = render_landing()
+        unresolved = sorted(set(re.findall(r"{{[^}]+}}", html)))
         check(
-            "Bot process running",
-            running,
-            f"PIDs: {pids}" if running else "not running (start with: python3 bot_new.py)"
+            "Landing template renders without unresolved placeholders",
+            len(unresolved) == 0,
+            f"unresolved: {unresolved}" if unresolved else "clean"
         )
     except Exception as e:
-        check("Bot process running", False, f"pgrep error: {e}")
+        check("Landing template renders without unresolved placeholders", False, str(e))
+
+    # ── 18. Runtime health check ─────────────────────────────────────────────
+    health_url = os.environ.get("VITAMAN_HEALTH_URL", "https://vitaman-production.up.railway.app/health")
+    try:
+        with urllib.request.urlopen(health_url, timeout=10) as response:
+            body = response.read().decode("utf-8", errors="replace")
+        healthy = response.status == 200 and '"ok"' in body and "vitaman" in body
+        check(
+            "Production health endpoint responds",
+            healthy,
+            f"{response.status} {health_url}"
+        )
+    except Exception as e:
+        check("Production health endpoint responds", False, f"{health_url}: {e}")
 
     # ── Final Score ──────────────────────────────────────────────────────────
     print()

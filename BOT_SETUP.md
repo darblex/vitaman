@@ -1,67 +1,71 @@
-# VITAMAN Telegram Bot — Setup Guide
+# Bot Setup — DrViagra Shop / Vitaman
 
-## מה הבוט עושה
-תפריט כפתורים אינטראקטיבי מלא:
+## Current production bot
 
-```
-/start →
-  🌿 מורינגה — ₪89
-  🔥 כורכום — ₪89
-  💪 חבילת כוח — ₪149
-  ❓ שאלות נפוצות
-  📞 דבר עם נציג
-```
+- Bot username: `@DrViagrashop_Bot`
+- Runtime file: `bot_new.py`
+- Server/webhook file: `server.py`
+- Production mode: webhook through Railway
+- Admin chat is controlled by `SELLER_CHAT_ID`
 
-כל מוצר → תיאור + מחיר + כפתור **הזמן עכשיו**
+## Bot commands
 
-הזמנה אוספת: שם → עיר → טלפון → אמצעי תשלום (כפתורים)
+Customer:
+- `/start` — opens the store
+- `/faq` — FAQ
+- `/contact` — seller contact
+- `/myorders` — customer order history
 
-סיכום הזמנה מגיע ללקוח + נשלח אליך כהודעה.
+Admin only:
+- `/orders` — recent orders
+- `/stats` — order/revenue stats
+- `/broadcast` — broadcast to known users
+- `/statusupdate` — send order status update
 
----
+## Production webhook config
 
-## הקמה — 5 דקות
+Railway env should include:
 
-### שלב 1: צור בוט
-1. פתח @BotFather בטלגרם
-2. שלח `/newbot`
-3. בחר שם: `VITAMAN Store`
-4. בחר יוזר: `vitaman_store_bot` (או כל שם פנוי)
-5. תקבל **API Token** — שמור אותו
-
-### שלב 2: עדכן את הקוד
-פתח `bot.py` ושנה:
-
-```python
-BOT_TOKEN = "123456:ABCdefGHIjklMNO..."   # ← הטוקן שקיבלת
-SELLER_CHAT_ID = 123456789                  # ← ה-ID שלך בטלגרם
-SELLER_USERNAME = "your_username"           # ← היוזר שלך
-WHATSAPP_NUMBER = "972501234567"            # ← המספר שלך
+```text
+BOT_TOKEN=<telegram token>
+TELEGRAM_BOT_USERNAME=DrViagrashop_Bot
+SELLER_CHAT_ID=400023112
+USE_POLLING=0
+WEBHOOK_BASE=https://vitaman-production.up.railway.app
+WEBHOOK_PATH=/telegram/webhook
+WEBHOOK_SECRET=<secret>
+DATA_DIR=/data
 ```
 
-💡 כדי למצוא את ה-Chat ID שלך: שלח הודעה ל-@userinfobot
+`server.py` registers the webhook on startup and checks Telegram's secret-token header on incoming updates.
 
-### שלב 3: התקן והרץ
+## Local dev
+
+Use a separate dev token if possible. If using the production token, do not run polling at the same time as the production webhook.
+
 ```bash
-pip install python-telegram-bot==21.*
-python3 bot.py
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+export BOT_TOKEN=...
+export USE_POLLING=1
+export DATA_DIR=./data
+bash start.sh
 ```
 
-### שלב 4 (אופציונלי): הרצה קבועה
-```bash
-# עם screen
-screen -S vitaman
-python3 bot.py
-# Ctrl+A, D לניתוק
+## Editing products
 
-# או עם systemd
-sudo nano /etc/systemd/system/vitaman-bot.service
-```
+Products are defined in `PRODUCTS` inside `bot_new.py`:
+- `kamagra`
+- `vidalista`
+- `bundle`
 
----
+Each product has:
+- `name`
+- `emoji`
+- `desc`
+- `pills_per_pack`
+- `base_price`
+- `image`
 
-## התאמה אישית
-- שנה מחירים ב-`PRODUCTS` dict
-- שנה תיאורים
-- הוסף מוצרים חדשים
-- שנה שאלות נפוצות ב-`FAQ_TEXT`
+Keep copy restrained: no guaranteed outcomes, no cure/treatment claims, and include advice to consult a medical professional where appropriate.
