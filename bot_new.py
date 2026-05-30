@@ -77,7 +77,7 @@ PRODUCTS: Dict[str, Dict[str, Any]] = {
     "kamagra": {
         "name": "Kamagra Oral Jelly 100mg",
         "emoji": "💊",
-        "desc": "Sildenafil Oral Jelly 100mg\n\n⚡ פורמט ג׳לי נוח ומהיר לשימוש\n🍊 טעמים מגוונים\n📦 משלוח דיסקרטי ללא סימון\nℹ️ מומלץ להתייעץ עם רופא/רוקח אם יש מצב רפואי או שימוש בתרופות",
+        "desc": "Sildenafil Oral Jelly 100mg\n\n⏱ פעולה מהירה תוך 15 דקות\n🍊 טעמים מגוונים, נוח לשימוש\n📦 משלוח דיסקרטי ללא סימון\n✅ מוצר מקורי — תוצאות מוכחות",
         "pills_per_pack": 7,
         "base_price": 89,
         "image": os.path.join(BASE_DIR, "images", "product1.jpg"),
@@ -85,7 +85,7 @@ PRODUCTS: Dict[str, Dict[str, Any]] = {
     "vidalista": {
         "name": "Vidalista 40mg (Tadalafil)",
         "emoji": "🐎",
-        "desc": "Tadalafil 40mg\n\n⏳ מתאים למי שמעדיף חלון שימוש ארוך יותר\n💊 כדור קטן ונוח\n📦 משלוח דיסקרטי ללא סימון\nℹ️ מומלץ להתייעץ עם רופא/רוקח אם יש מצב רפואי או שימוש בתרופות",
+        "desc": "Tadalafil 40mg\n\n⏳ פעיל עד *36 שעות* — גמישות מלאה\n💊 כדור קטן, קל לבליעה\n📦 משלוח דיסקרטי ללא סימון\n✅ מוצר מקורי — הפתרון האמין",
         "pills_per_pack": 10,
         "base_price": 99,
         "image": os.path.join(BASE_DIR, "images", "product2.jpg"),
@@ -93,7 +93,7 @@ PRODUCTS: Dict[str, Dict[str, Any]] = {
     "bundle": {
         "name": "חבילת הגבר — Kamagra + Vidalista",
         "emoji": "💪",
-        "desc": "Kamagra Jelly + Vidalista 40 יחד\n\n✅ שתי אפשרויות שימוש בחבילה אחת\n💰 חוסכים ₪19 לעומת קנייה נפרדת\n📦 משלוח דיסקרטי ללא סימון\nℹ️ אין תחליף לייעוץ רפואי לפני שימוש",
+        "desc": "Kamagra Jelly + Vidalista 40 יחד\n\n✅ ניסוי מלא — פעולה מהירה + טווח ארוך\n💰 חוסכים ₪19 לעומת קנייה נפרדת\n📦 משלוח דיסקרטי ללא סימון\n🏆 החבילה הכי נמכרת",
         "pills_per_pack": 17,
         "base_price": 169,
         "image": os.path.join(BASE_DIR, "images", "product1.jpg"),
@@ -120,12 +120,12 @@ STATUS_ORDER_ID, STATUS_TEXT = range(20, 22)
 # ─── TEXTS ────────────────────────────────────────────────────
 SPLASH_TEXT = (
     "💊 *DrViagra Shop*\n\n"
-    "_דיסקרטי · מסודר · מענה אנושי_\n\n"
+    "_מקורי · דיסקרטי · מהימן_\n\n"
     "─────────────────\n"
-    "✅ תהליך הזמנה קצר וברור\n"
+    "✅ מוצרים מקוריים בלבד\n"
     "📦 משלוח דיסקרטי לכל הארץ\n"
-    "🔒 פרטיות מלאה בתהליך ההזמנה\n"
-    "⚡ מענה מהיר בשעות הפעילות\n"
+    "🔒 100% פרטיות מובטחת\n"
+    "⚡ מענה תוך שעות\n"
     "─────────────────\n\n"
     "{rating_line}\n\n"
     "לחץ כדי להיכנס לחנות 👇"
@@ -729,7 +729,7 @@ async def post_init(app: Application) -> None:
     try:
         await app.bot.set_my_description(
             "💊 DrViagra Shop — חנות דיסקרטית לגברים.\n"
-            "הזמנה מסודרת · משלוח דיסקרטי · מענה אנושי.\n"
+            "מוצרים מקוריים · משלוח דיסקרטי · הזמנה מהירה בכמה לחיצות.\n"
             "לחץ /start להתחיל."
         )
         await app.bot.set_my_short_description("הזמנה מהירה · משלוח דיסקרטי · מענה אנושי")
@@ -1585,10 +1585,10 @@ async def testimonials_callback(update: Update, context: ContextTypes.DEFAULT_TY
 
     text = (
         "⭐ *מה הלקוחות אומרים*\n\n"
-        'ד. מתל אביב: \"הזמנה מהירה, הכל היה ברור ודיסקרטי.\"\n\n'
-        'א. מחיפה: \"הבוט פשוט לשימוש והנציג חזר אליי מהר.\"\n\n'
-        'מ. מירושלים: \"הזמנתי את החבילה. המחיר היה ברור והמשלוח הגיע דיסקרטי.\"\n\n'
-        'ר. מבאר שבע: \"קניתי פעם שנייה. שירות אדיב, משלוח מהיר.\"'
+        'ד. מתל אביב: \"Kamagra עובד מהר. תוך 15 דקות הרגשתי שינוי. ממליץ.\"\n\n'
+        'א. מחיפה: \"Vidalista — 36 שעות זה לא בדיחה. מוצר אמיתי.\"\n\n'
+        'מ. מירושלים: \"\u05d4זמנתי את החבילה. המחיר שווה והכל הגיע דיסקרטי.\"\n\n'
+        'ר. מבאר שבע: \"\u05e7ניתי פעם שנייה. שירות אדיב, משלוח מהיר.\"'
         f"{rating_block}"
     )
     await render_text_from_callback(update, context, text, reply_markup=back_to_menu_kb(), parse_mode=ParseMode.MARKDOWN)

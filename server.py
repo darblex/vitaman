@@ -47,18 +47,7 @@ async def handle_index(_request: web.Request) -> web.Response:
 
 async def handle_health(_request: web.Request) -> web.Response:
     mode = "polling" if config.USE_POLLING else "webhook"
-    data_dir = Path(config.DATA_DIR)
-    return web.json_response(
-        {
-            "ok": True,
-            "service": "vitaman",
-            "shop": config.SHOP_NAME,
-            "bot_mode": mode,
-            "bot_username": config.TELEGRAM_BOT_USERNAME,
-            "webhook_path": None if config.USE_POLLING else config.WEBHOOK_PATH,
-            "data_dir_ready": data_dir.exists() and data_dir.is_dir(),
-        }
-    )
+    return web.json_response({"ok": True, "service": "vitaman", "bot_mode": mode})
 
 
 async def handle_webhook(request: web.Request) -> web.Response:
