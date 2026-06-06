@@ -6,7 +6,7 @@ DATA_DIR = os.environ.get("DATA_DIR", os.path.join(BASE_DIR, "data"))
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 SELLER_CHAT_ID = int(os.environ.get("SELLER_CHAT_ID", "400023112"))
-SELLER_USERNAME = os.environ.get("SELLER_USERNAME", "lilnano1994")
+SELLER_USERNAME = os.environ.get("SELLER_USERNAME", "LILNONO0")
 
 REMINDER_DELAY_SECONDS = int(os.environ.get("REMINDER_DELAY_SECONDS", "3600"))
 MAX_QTY = int(os.environ.get("MAX_QTY", "5"))

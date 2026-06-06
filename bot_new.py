@@ -30,6 +30,7 @@ from urllib.parse import quote
 
 from telegram import (
     BotCommand,
+    ForceReply,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Update,
@@ -449,20 +450,11 @@ def splash_kb() -> InlineKeyboardMarkup:
 
 
 def main_menu_kb(context: Optional[ContextTypes.DEFAULT_TYPE] = None) -> InlineKeyboardMarkup:
-    cart = {}
-    if context is not None:
-        cart = cart_get(context)
-    cart_count = sum(cart.values()) if cart else 0
-    cart_label = "🛒 סל הקניות שלי"
-    if cart_count:
-        cart_label += f" ({cart_count})"
-
     return InlineKeyboardMarkup(
         [
             [InlineKeyboardButton("💊 קמגרה אורל ג׳ל", callback_data="prod_kamagra")],
             [InlineKeyboardButton("🐎 סיאליס וידליסטה", callback_data="prod_vidalista")],
             [InlineKeyboardButton("💪 חבילת הגבר — קמגרה + וידליסטה", callback_data="prod_bundle")],
-            [InlineKeyboardButton(cart_label, callback_data="cart")],
             [InlineKeyboardButton("❓ שאלות", callback_data="faq"),
              InlineKeyboardButton("📞 צור קשר", callback_data="contact")],
         ]
@@ -480,8 +472,6 @@ def product_kb(key: str, context: ContextTypes.DEFAULT_TYPE) -> InlineKeyboardMa
     p = PRODUCTS[key]
     rows: List[List[InlineKeyboardButton]] = []
     rows.append([InlineKeyboardButton(f"🛒 הזמן עכשיו — ₪{p['base_price']}", callback_data=f"qty_{key}")])
-    rows.append([InlineKeyboardButton("➕ הוסף חבילה 1 לסל", callback_data=f"addcart_{key}_1")])
-    rows.append([InlineKeyboardButton("🛒 לסל הקניות שלי", callback_data="cart")])
 
     # Upsell
     if key in ("kamagra", "vidalista"):
@@ -507,7 +497,7 @@ def quantity_kb(key: str) -> InlineKeyboardMarkup:
         label = f"{qty} חבילות — {pills} כדורים — ₪{line_total}"
         if qty == 1:
             label = f"חבילה אחת — {pills} כדורים — ₪{line_total}"
-        rows.append([InlineKeyboardButton(label, callback_data=f"addcart_{key}_{qty}")])
+        rows.append([InlineKeyboardButton(label, callback_data=f"buy_{key}_{qty}")])
 
     # Required: back to product on qty screen, plus back to menu
     rows.append([InlineKeyboardButton("◀️ חזרה למוצר", callback_data=f"prod_{key}")])
@@ -912,10 +902,10 @@ async def qty_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     key = query.data.replace("qty_", "")
     p = PRODUCTS[key]
     text = (
-        f"📦 *בחר כמות להוספה לעגלה — {p['name']}*\n\n"
+        f"📦 *כמה חבילות תרצה? — {p['name']}*\n\n"
         f"💊 כל חבילה = {p['pills_per_pack']} יחידות\n"
-        f"🏷 מ-{DISCOUNT_THRESHOLD} חבילות (סה\"כ בעגלה) — {DISCOUNT_PCT}% הנחה!\n\n"
-        "בחר כמות:"
+        f"🏷 מ-{DISCOUNT_THRESHOLD} חבילות — {DISCOUNT_PCT}% הנחה אוטומטית!\n\n"
+        "בחר כמות ונמשיך ישר לתשלום 👇"
     )
     await render_text_from_callback(
         update,
@@ -953,6 +943,48 @@ async def add_to_cart_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     )
 
     await render_text_from_callback(update, context, text, reply_markup=kb)
+
+
+async def buy_now_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Quantity selected → set single-item order and go straight to checkout."""
+    register_user(update.effective_user)
+    query = update.callback_query
+    await query.answer()
+
+    try:
+        _, key, qty_s = query.data.split("_", 2)
+        qty = int(qty_s)
+    except (ValueError, KeyError):
+        await render_text_from_callback(update, context, "משהו השתבש, נסה שוב.", reply_markup=back_to_menu_kb())
+        return ConversationHandler.END
+
+    cart_clear(context)
+    cart_add(context, key, qty)
+    cancel_reminder(context, update.effective_user.id)
+
+    totals = cart_calculate_totals(cart_get(context))
+    p = PRODUCTS[key]
+    discount_line = f"\n🏷 הנחה: *-₪{totals.auto_discount}*" if totals.auto_discount else ""
+    summary = (
+        "🧾 *ההזמנה שלך*\n\n"
+        f"{p['emoji']} {p['name']} × {qty}\n"
+        f"💳 סה\"כ מוצרים: *₪{totals.subtotal}*{discount_line}\n\n"
+        "──────────────────\n"
+        "_ממשיכים למילוי פרטים 👇_"
+    )
+    await render_text_from_callback(
+        update, context, summary,
+        reply_markup=cancel_order_kb(),
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="✏️ *שלב 1 מתוך 3*\n\nכתוב כאן את *השם המלא* שלך:",
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=ForceReply(input_field_placeholder="השם המלא שלך"),
+    )
+    return NAME
 
 
 async def cart_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -1093,13 +1125,21 @@ async def checkout_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     context.user_data["name"] = update.message.text.strip()
-    await update.message.reply_text("🏙 *שלב 2/5* — באיזו עיר גרים?", reply_markup=cancel_order_kb(), parse_mode=ParseMode.MARKDOWN)
+    await update.message.reply_text(
+        "🏙 *שלב 2 מתוך 3*\n\nבאיזו *עיר* אתה גר?",
+        reply_markup=ForceReply(input_field_placeholder="עיר מגורים"),
+        parse_mode=ParseMode.MARKDOWN,
+    )
     return CITY
 
 
 async def get_city(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     context.user_data["city"] = update.message.text.strip()
-    await update.message.reply_text("📱 *שלב 3/5* — מספר טלפון לאישור ומעקב:", reply_markup=cancel_order_kb(), parse_mode=ParseMode.MARKDOWN)
+    await update.message.reply_text(
+        "📱 *שלב 3 מתוך 3*\n\nמה ה*טלפון* שלך? (לאישור ההזמנה)",
+        reply_markup=ForceReply(input_field_placeholder="לדוגמה: 0521234567"),
+        parse_mode=ParseMode.MARKDOWN,
+    )
     return PHONE
 
 
@@ -1107,11 +1147,14 @@ async def get_phone(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     phone = update.message.text.strip()
     clean = phone.replace("-", "").replace(" ", "").replace("+", "")
     if not clean.isdigit() or len(clean) < 9:
-        await update.message.reply_text("❌ המספר לא נראה תקין. נסה שוב (לדוגמה: 0521234567)", reply_markup=cancel_order_kb())
+        await update.message.reply_text(
+            "❌ המספר לא נראה תקין. נסה שוב (לדוגמה: 0521234567)",
+            reply_markup=ForceReply(input_field_placeholder="לדוגמה: 0521234567"),
+        )
         return PHONE
     context.user_data["phone"] = phone
     await update.message.reply_text(
-        "🚚 *שלב 4/5* — איך תרצה לקבל את ההזמנה?",
+        "🚚 *איך תרצה לקבל את ההזמנה?*",
         reply_markup=delivery_kb(),
         parse_mode=ParseMode.MARKDOWN,
     )
@@ -1899,6 +1942,7 @@ def build_application() -> Application:
 
     checkout_handler = ConversationHandler(
         entry_points=[
+            CallbackQueryHandler(buy_now_callback, pattern=r"^buy_"),
             CallbackQueryHandler(checkout_start, pattern=r"^checkout$"),
             CallbackQueryHandler(upsell_bundle_callback, pattern=r"^upsell_bundle$"),
             CallbackQueryHandler(checkout_confirm_callback, pattern=r"^checkout_confirm$"),
