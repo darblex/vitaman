@@ -87,9 +87,8 @@ Message to buyer:
 לאחר מכן נציג יחזור אליך לסגירה.
 
 ### Forward to seller
-You can route them to:
-- Telegram username: `@PLACEHOLDER`
-- WhatsApp: `https://wa.me/972000000000`
+Route all orders to Telegram only:
+- Representative username: `@lilnano1994`
 
 ---
 
@@ -110,8 +109,6 @@ You can route them to:
 ---
 
 ## What you still need to replace
-- Bot username
-- Seller Telegram username
-- WhatsApp number
+- Bot username (if changed)
 - Delivery wording
 - Final prices if different

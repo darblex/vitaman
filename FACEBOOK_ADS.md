@@ -81,5 +81,5 @@ Offer creative:
 
 ## Funnel Notes
 Best CTA objective at start:
-- Messages / WhatsApp / Telegram click
+- Messages / Telegram click
 - Not broad conversion campaigns at day 1

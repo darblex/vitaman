@@ -23,10 +23,10 @@ Python-Telegram-Bot v20+
 import json
 import logging
 import os
-import urllib.parse
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
+from urllib.parse import quote
 
 from telegram import (
     BotCommand,
@@ -57,7 +57,6 @@ from config import (
     REMINDER_DELAY_SECONDS,
     SELLER_CHAT_ID,
     SELLER_USERNAME,
-    WHATSAPP_NUMBER,
 )
 USERS_FILE = os.path.join(DATA_DIR, "users.json")
 ORDERS_FILE = os.path.join(DATA_DIR, "orders.json")
@@ -100,7 +99,7 @@ PRODUCTS: Dict[str, Dict[str, Any]] = {
     },
 }
 
-PAYMENT_OPTIONS = ["מזומן", "ביט", "פייבוקס", "העברה בנקאית"]
+PAYMENT_OPTIONS = ["מזומן", "ביט", "פייבוקס"]
 
 
 # ─── ORDER FLOW STATES (required) ─────────────────────────────
@@ -109,7 +108,6 @@ NAME = 1
 CITY = 2
 PHONE = 3
 DELIVERY = 4
-COUPON = 7
 PAYMENT = 5
 PROOF = 6
 
@@ -570,7 +568,7 @@ def coupon_kb() -> InlineKeyboardMarkup:
     )
 
 
-PAYMENT_ICONS = {"מזומן": "💵", "ביט": "📲", "פייבוקס": "💸", "העברה בנקאית": "🏦"}
+PAYMENT_ICONS = {"מזומן": "💵", "ביט": "📲", "פייבוקס": "💸"}
 
 def payment_kb() -> InlineKeyboardMarkup:
     rows = [[InlineKeyboardButton(f"{PAYMENT_ICONS.get(opt,'💳')} {opt}", callback_data=f"pay_{opt}")] for opt in PAYMENT_OPTIONS]
@@ -817,11 +815,11 @@ async def faq_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         "יש הנחה?\n"
         "כן — מ-3 חבילות ומעלה יש 10% הנחה אוטומטית.\n\n"
         "איך מזמינים?\n"
-        "בוחרים מוצר → מוסיפים לעגלה → עוברים לקופה → משאירים פרטים → עוברים לנציג בוואטסאפ.\n\n"
+        "בוחרים מוצר → מוסיפים לעגלה → עוברים לקופה → משאירים פרטים → ממשיכים לנציג בטלגרם.\n\n"
         "יש משלוח?\n"
         f"כן — משלוח לבית +₪{DELIVERY_COST}, או איסוף עצמי בחינם.\n\n"
         "איך משלמים?\n"
-        "מזומן, ביט, פייבוקס או העברה בנקאית."
+        "מזומן, ביט או פייבוקס."
         f"{rating_block}"
     )
     await update.message.reply_text(text, reply_markup=back_to_menu_kb())
@@ -832,7 +830,6 @@ async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     text = (
         "📞 צור קשר\n\n"
         f"💬 טלגרם: @{SELLER_USERNAME}\n"
-        f"📱 וואטסאפ: https://wa.me/{WHATSAPP_NUMBER}\n\n"
         "נציג יחזור אליך בהקדם."
     )
     await update.message.reply_text(text, reply_markup=back_to_menu_kb())
@@ -861,8 +858,8 @@ async def store_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await render_text_from_callback(
         update,
         context,
-        build_splash_text(),
-        reply_markup=splash_kb(),
+        STORE_TEXT,
+        reply_markup=main_menu_kb(context),
         parse_mode=ParseMode.MARKDOWN,
     )
 
@@ -1180,12 +1177,11 @@ async def delivery_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     await render_text_from_callback(
         update, context,
         f"✅ נבחר: *{label}*\n\n"
-        "🎟 *שלב 5/5 — יש לך קוד קופון?*\n"
-        "שלח קוד (למשל *SAVE10* או *VIP20*) או לחץ דלג.",
-        reply_markup=coupon_kb(),
+        "💳 איך תרצה לשלם?",
+        reply_markup=payment_kb(),
         parse_mode=ParseMode.MARKDOWN,
     )
-    return COUPON
+    return PAYMENT
 
 
 async def coupon_skip_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -1228,10 +1224,46 @@ async def get_coupon_text(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         context.user_data.pop("coupon_code", None)
         context.user_data.pop("coupon_discount", None)
         await update.message.reply_text(
-            "❌ קוד לא תקין. נסה שוב, או לחץ דלג.",
-            reply_markup=coupon_kb(),
+            "קופונים כבויים כרגע - ממשיכים לתשלום 👇",
+            reply_markup=payment_kb(),
         )
-        return COUPON
+        return PAYMENT
+
+
+def seller_username_normalized() -> str:
+    return SELLER_USERNAME.lstrip("@").lower()
+
+
+def order_share_text(order: Dict[str, Any]) -> str:
+    cust = order["customer"]
+    item_lines = [f"- {it['product_name']} x{it['qty']}" for it in order.get("items", [])]
+    delivery_fee = order.get("delivery_fee", DELIVERY_COST)
+    delivery_line = f"משלוח (+₪{delivery_fee})" if delivery_fee else "איסוף עצמי (חינם)"
+    lines = [
+        "שלום, סיימתי הזמנה:",
+        "",
+        f"מספר: {order['order_id']}",
+        "פריטים:",
+        *item_lines,
+        f"סה\"כ: ₪{order['total']}",
+    ]
+    if order.get("auto_discount"):
+        lines.append(f"חיסכון: ₪{order['auto_discount']}")
+    lines += [
+        f"איסוף/משלוח: {delivery_line}",
+        f"שם: {cust.get('name')}",
+        f"עיר: {cust.get('city')}",
+        f"טלפון: {cust.get('phone')}",
+        f"תשלום: {order['payment_method']}",
+    ]
+    return "\n".join(lines)
+
+
+def seller_chat_url(order: Optional[Dict[str, Any]] = None) -> str:
+    username = seller_username_normalized()
+    if order:
+        return f"https://t.me/{username}?text={quote(order_share_text(order))}"
+    return f"https://t.me/{username}"
 
 
 def build_order_from_context(update: Update, context: ContextTypes.DEFAULT_TYPE, payment_method: str) -> Dict[str, Any]:
@@ -1333,7 +1365,7 @@ def order_user_summary(order: Dict[str, Any]) -> str:
         "🕒  *מה קורה עכשיו?*",
         "1️⃣  נציג צור קשר אליך לאישור הזמנה",
         "2️⃣  נארז ושלח בדיסקרטיות",
-        "3️⃣  תקבל עדכון SMS / וואטסאפ",
+        "3️⃣  תקבל עדכון בטלגרם",
         "",
         "תודה 🙏",
     ]
@@ -1379,18 +1411,11 @@ async def finalize_order(
 
     save_order(order)
 
-    # Build WhatsApp URL
-    wa_msg = (
-        f"שלום, ביצעתי הזמנה {order['order_id']}.\n"
-        f"פריטים: {items_compact_summary(cart_get(context))}\n"
-        f"שם: {order['customer']['name']} | טל: {order['customer']['phone']} | עיר: {order['customer']['city']} | תשלום: {payment_method}"
-    )
-    wa_url = f"https://wa.me/{WHATSAPP_NUMBER}?text={urllib.parse.quote(wa_msg)}"
-
-    # Single message — summary + WA + review in one
+    chat_url = seller_chat_url(order)
+    # Single message — summary + Telegram contact
     summary_text = order_user_summary(order)
     kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💬 סיום הזמנה עם נציג בוואטסאפ", url=wa_url)],
+        [InlineKeyboardButton("💬 סיום הזמנה עם נציג", url=chat_url)],
         [InlineKeyboardButton("← חזרה לחנות", callback_data="menu")],
     ])
 
@@ -1399,12 +1424,6 @@ async def finalize_order(
         text=summary_text,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=kb,
-    )
-
-    await context.bot.send_message(
-        chat_id=update.effective_user.id,
-        text="⭐ איך הייתה החוויה? דירוג קצר עוזר לנו:",
-        reply_markup=review_kb(order["order_id"]),
     )
 
     # Seller notification
@@ -1436,11 +1455,12 @@ async def payment_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     # Store for proof step
     context.user_data["payment_method"] = method
 
-    if method == "מזומן":
+    if method in ("מזומן", "ביט"):
+        method_title = "💵 מזומן" if method == "מזומן" else "📲 ביט"
         await render_text_from_callback(
             update,
             context,
-            "✅ קיבלתי! תשלום: 💵 מזומן. מייצר הזמנה...",
+            f"✅ קיבלתי! תשלום: {method_title}. מייצר הזמנה...",
             reply_markup=back_to_menu_kb(),
         )
         await finalize_order(update, context, payment_method=method, proof=None)
@@ -1485,7 +1505,7 @@ async def proof_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
     proof = extract_proof_from_message(update)
     if not proof:
         await update.message.reply_text(
-            "לא קיבלתי תמונה 🤔\nשלח צילום מסך של האישור (ביט/פייבוקס/העברה) ונסגור.",
+            "לא קיבלתי תמונה 🤔\nשלח צילום מסך של האישור (פייבוקס) ונסגור.",
             reply_markup=proof_kb(),
         )
         return PROOF
@@ -1611,9 +1631,9 @@ async def faq_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "*יש הנחה?*\n"
         "כן — מ-3 חבילות ומעלה יש 10% הנחה אוטומטית.\n\n"
         "*איך מזמינים?*\n"
-        "בוחרים מוצר → מוסיפים לעגלה → קופה → נציג בוואטסאפ.\n\n"
+        "בוחרים מוצר → מוסיפים לעגלה → קופה → נציג בטלגרם.\n\n"
         "*איך משלמים?*\n"
-        "מזומן, ביט, פייבוקס או העברה בנקאית."
+        "מזומן, ביט או פייבוקס."
         f"{rating_line}"
     )
     await render_text_from_callback(update, context, text, reply_markup=back_to_menu_kb(), parse_mode=ParseMode.MARKDOWN)
@@ -1625,10 +1645,25 @@ async def contact_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     text = (
         "📞 *צור קשר*\n\n"
         f"💬 טלגרם: @{SELLER_USERNAME}\n"
-        f"📱 וואטסאפ: https://wa.me/{WHATSAPP_NUMBER}\n\n"
         "נציג יחזור אליך בהקדם."
     )
     await render_text_from_callback(update, context, text, reply_markup=back_to_menu_kb(), parse_mode=ParseMode.MARKDOWN)
+
+
+# ─── LEGACY CALLBACK COMPAT ───────────────────────────────────
+
+
+async def legacy_reset_to_store_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Handle old buttons from previous bot versions and recover gracefully."""
+    query = update.callback_query
+    await query.answer("עודכן לגרסה חדשה - מחזיר לחנות ✅", show_alert=False)
+    await render_text_from_callback(
+        update,
+        context,
+        STORE_TEXT,
+        reply_markup=main_menu_kb(context),
+        parse_mode=ParseMode.MARKDOWN,
+    )
 
 
 # ─── USER COMMANDS ────────────────────────────────────────────
@@ -1873,10 +1908,6 @@ def build_application() -> Application:
             CITY: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_city)],
             PHONE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_phone)],
             DELIVERY: [CallbackQueryHandler(delivery_callback, pattern=r"^delivery_")],
-            COUPON: [
-                CallbackQueryHandler(coupon_skip_callback, pattern=r"^coupon_skip$"),
-                MessageHandler(filters.TEXT & ~filters.COMMAND, get_coupon_text),
-            ],
             PAYMENT: [CallbackQueryHandler(payment_callback, pattern=r"^pay_")],
             PROOF: [
                 MessageHandler(
@@ -1936,8 +1967,10 @@ def build_application() -> Application:
     app.add_handler(CallbackQueryHandler(contact_callback, pattern=r"^contact$"))
     app.add_handler(CallbackQueryHandler(howitworks_callback, pattern=r"^howitworks$"))
     app.add_handler(CallbackQueryHandler(testimonials_callback, pattern=r"^testimonials$"))
-    app.add_handler(CallbackQueryHandler(review_callback, pattern=r"^review_[A-Z0-9-]+_[1-5]$"))
-    app.add_handler(CallbackQueryHandler(review_skip_callback, pattern=r"^review_skip_"))
+    # Legacy callbacks from older flows (coupon/review) - send user back to live store flow
+    app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^coupon_skip$"))
+    app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^review_[A-Z0-9-]+_[1-5]$"))
+    app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^review_skip_"))
 
     app.add_error_handler(on_error)
     return app

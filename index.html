@@ -238,7 +238,7 @@
       </p>
       <div class="cta-row">
         <a class="btn btn-primary track-lead" data-label="hero_telegram" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_hero">🛒 כניסה לחנות בטלגרם</a>
-        <a class="btn btn-secondary track-contact" data-label="hero_whatsapp" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F">💬 שאלה לפני הזמנה</a>
+        <a class="btn btn-secondary track-contact" data-label="hero_telegram_contact" href="https://t.me/{{TELEGRAM_BOT}}?start=contact">💬 שאלה לפני הזמנה</a>
       </div>
       <div class="trust">
         <div class="trust-item">✅ מוצרים מקוריים</div>
@@ -287,7 +287,7 @@
         <div class="step"><div class="num">1</div><div><strong>נכנסים לטלגרם</strong><br/><span style="color:var(--muted)">לוחצים על הכפתור — נפתח הבוט.</span></div></div>
         <div class="step"><div class="num">2</div><div><strong>בוחרים מוצר וכמות</strong><br/><span style="color:var(--muted)">עגלה, הנחות אוטומטיות, הכל בפנים.</span></div></div>
         <div class="step"><div class="num">3</div><div><strong>משאירים פרטים</strong><br/><span style="color:var(--muted)">שם, עיר, טלפון, אמצעי תשלום.</span></div></div>
-        <div class="step"><div class="num">4</div><div><strong>נציג סוגר</strong><br/><span style="color:var(--muted)">מעבר לוואטסאפ / סגירה בטלגרם — משלוח דיסקרטי.</span></div></div>
+        <div class="step"><div class="num">4</div><div><strong>נציג סוגר</strong><br/><span style="color:var(--muted)">סגירה בטלגרם — משלוח דיסקרטי.</span></div></div>
       </div>
     </div>
   </section>
@@ -307,10 +307,10 @@
     <div class="wrap">
       <h2>שאלות נפוצות</h2>
       <details><summary>האם המשלוח דיסקרטי?</summary><p>כן. האריזה ללא סימון שמזהה את התוכן.</p></details>
-      <details><summary>איך משלמים?</summary><p>מזומן, ביט, פייבוקס או העברה בנקאית — לפי מה שנוח לך.</p></details>
+      <details><summary>איך משלמים?</summary><p>מזומן, ביט או פייבוקס — לפי מה שנוח לך.</p></details>
       <details><summary>יש הנחה על כמות?</summary><p>כן — {{DISCOUNT_PCT}}% הנחה אוטומטית מ-{{DISCOUNT_THRESHOLD}} חבילות ומעלה.</p></details>
       <details><summary>כמה זמן לוקח לקבל?</summary><p>בדרך כלל 1–3 ימי עסקים, בתיאום מול הנציג.</p></details>
-      <details><summary>אפשר לדבר עם בן אדם?</summary><p>בטח. לחץ על וואטסאפ או שלח הודעה בטלגרם — נציג יחזור אליך.</p></details>
+      <details><summary>אפשר לדבר עם בן אדם?</summary><p>בטח. שלח הודעה בטלגרם — נציג יחזור אליך.</p></details>
     </div>
   </section>
 
@@ -318,10 +318,10 @@
     <div class="wrap">
       <div class="card" style="text-align:center;padding:28px;">
         <h2 style="margin-top:0;">מוכן להזמין?</h2>
-        <p class="sub" style="margin-bottom:18px;">הכי מהיר — דרך טלגרם. הכי נוח — דרך וואטסאפ.</p>
+        <p class="sub" style="margin-bottom:18px;">הכי מהיר — דרך טלגרם בלבד.</p>
         <div class="cta-row" style="justify-content:center;">
           <a class="btn btn-primary track-lead" data-label="footer_telegram" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_footer">🛒 הזמן עכשיו בטלגרם</a>
-          <a class="btn btn-secondary track-contact" data-label="footer_whatsapp" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%95%D7%9B%D7%9F%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F">💬 וואטסאפ</a>
+          <a class="btn btn-secondary track-contact" data-label="footer_telegram_contact" href="https://t.me/{{TELEGRAM_BOT}}?start=contact">💬 שיחה בטלגרם</a>
         </div>
       </div>
     </div>
@@ -329,7 +329,7 @@
 
   <footer>
     <div class="wrap">
-      {{SHOP_NAME}} © 2026 · טלגרם: @{{TELEGRAM_BOT}} · וואטסאפ: {{WHATSAPP_NUMBER}}<br/>
+      {{SHOP_NAME}} © 2026 · טלגרם: @{{TELEGRAM_BOT}}<br/>
       <small>מוצרים אלו מיועדים לשימוש אישי בלבד. אין תחליף לייעוץ רפואי.</small>
     </div>
   </footer>
@@ -337,7 +337,7 @@
   <div class="sticky">
     <div class="sticky-inner">
       <a class="btn btn-primary track-lead" data-label="sticky_telegram" href="https://t.me/{{TELEGRAM_BOT}}?start=fb_sticky">🛒 טלגרם</a>
-      <a class="btn btn-secondary track-contact" data-label="sticky_whatsapp" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%95%D7%9B%D7%9F%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F">💬 וואטסאפ</a>
+      <a class="btn btn-secondary track-contact" data-label="sticky_telegram_contact" href="https://t.me/{{TELEGRAM_BOT}}?start=contact">💬 שיחה</a>
     </div>
   </div>
 

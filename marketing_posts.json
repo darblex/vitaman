@@ -1,0 +1,8 @@
+{
+  "posts": [
+    {
+      "id": "store_cta",
+      "text": "🛍 הזמנה מהירה ודיסקרטית בטלגרם\n\nלחץ כאן למעבר לחנות:\n{bot_url}?start={source_tag}_store"
+    }
+  ]
+}

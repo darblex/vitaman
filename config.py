@@ -6,8 +6,7 @@ DATA_DIR = os.environ.get("DATA_DIR", os.path.join(BASE_DIR, "data"))
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 SELLER_CHAT_ID = int(os.environ.get("SELLER_CHAT_ID", "400023112"))
-SELLER_USERNAME = os.environ.get("SELLER_USERNAME", "Darblex")
-WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER", "972523288147")
+SELLER_USERNAME = os.environ.get("SELLER_USERNAME", "lilnano1994")
 
 REMINDER_DELAY_SECONDS = int(os.environ.get("REMINDER_DELAY_SECONDS", "3600"))
 MAX_QTY = int(os.environ.get("MAX_QTY", "5"))
@@ -27,3 +26,18 @@ USE_POLLING = os.environ.get("USE_POLLING", "0") == "1"
 WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", "")
 WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH", "/telegram/webhook")
 WEBHOOK_BASE = os.environ.get("WEBHOOK_BASE", LANDING_PAGE_URL.rstrip("/"))
+
+# Marketing automation
+AUTO_POST_ENABLED = os.environ.get("AUTO_POST_ENABLED", "0") == "1"
+AUTO_POST_CHANNEL_ID = os.environ.get("AUTO_POST_CHANNEL_ID", "")
+AUTO_POST_TIMES = [
+    x.strip() for x in os.environ.get("AUTO_POST_TIMES", "10:00,14:00,20:00").split(",") if x.strip()
+]
+AUTO_POST_TIMEZONE = os.environ.get("AUTO_POST_TIMEZONE", "Asia/Jerusalem")
+AUTO_POST_SOURCE_TAG = os.environ.get("AUTO_POST_SOURCE_TAG", "auto")
+AUTO_POSTS_FILE = os.environ.get("AUTO_POSTS_FILE", os.path.join(BASE_DIR, "marketing_posts.json"))
+
+AUTO_REPORT_ENABLED = os.environ.get("AUTO_REPORT_ENABLED", "1") == "1"
+AUTO_REPORT_CHAT_ID = int(os.environ.get("AUTO_REPORT_CHAT_ID", str(SELLER_CHAT_ID)))
+AUTO_REPORT_TIME = os.environ.get("AUTO_REPORT_TIME", "22:00")
+AUTO_REPORT_TIMEZONE = os.environ.get("AUTO_REPORT_TIMEZONE", "Asia/Jerusalem")

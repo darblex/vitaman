@@ -2,6 +2,7 @@
 """Unified web server: landing page, health, Telegram webhook."""
 from __future__ import annotations
 
+import asyncio
 import logging
 from pathlib import Path
 
@@ -9,6 +10,7 @@ from aiohttp import web
 from telegram import Update
 
 import config
+from automation import AutomationService, MarketingConfig, ReportConfig
 from bot_new import build_application
 
 logging.basicConfig(
@@ -21,6 +23,9 @@ BASE = Path(__file__).parent
 INDEX_PATH = BASE / "index.html"
 
 tg_application = None
+automation_service: AutomationService | None = None
+webhook_guard_task: asyncio.Task | None = None
+webhook_expected_url = ""
 
 
 def render_landing() -> str:
@@ -30,7 +35,6 @@ def render_landing() -> str:
         "{{SHOP_NAME}}": config.SHOP_NAME,
         "{{TELEGRAM_BOT}}": bot,
         "{{TELEGRAM_URL}}": f"https://t.me/{bot}",
-        "{{WHATSAPP_NUMBER}}": config.WHATSAPP_NUMBER,
         "{{FB_PIXEL_ID}}": config.FB_PIXEL_ID,
         "{{DISCOUNT_PCT}}": str(config.DISCOUNT_PCT),
         "{{DISCOUNT_THRESHOLD}}": str(config.DISCOUNT_THRESHOLD),
@@ -62,16 +66,78 @@ async def handle_webhook(request: web.Request) -> web.Response:
     except Exception:
         return web.Response(status=400, text="bad json")
 
-    update = Update.de_json(payload, tg_application.bot)
-    await tg_application.process_update(update)
+    try:
+        update = Update.de_json(payload, tg_application.bot)
+    except Exception:
+        logger.exception("Failed to parse incoming update")
+        return web.Response(text="ok")
+    try:
+        await tg_application.process_update(update)
+    except Exception:
+        logger.exception("Failed to process update")
     return web.Response(text="ok")
+
+
+async def ensure_webhook_registered() -> None:
+    if config.USE_POLLING or not tg_application or not webhook_expected_url:
+        return
+    try:
+        info = await tg_application.bot.get_webhook_info()
+    except Exception:
+        logger.exception("Could not read webhook info")
+        return
+    if info.url == webhook_expected_url:
+        return
+    logger.warning("Webhook drift detected (current=%s). Re-registering.", info.url or "<empty>")
+    await tg_application.bot.set_webhook(
+        url=webhook_expected_url,
+        secret_token=config.WEBHOOK_SECRET or None,
+        drop_pending_updates=False,
+        allowed_updates=Update.ALL_TYPES,
+    )
+    logger.info("Webhook restored at %s", webhook_expected_url)
+
+
+async def webhook_guard_loop() -> None:
+    while True:
+        try:
+            await asyncio.sleep(20)
+            await ensure_webhook_registered()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            logger.exception("Webhook guard check failed")
 
 
 async def on_startup(_app: web.Application) -> None:
     global tg_application
+    global automation_service
+    global webhook_guard_task
+    global webhook_expected_url
     tg_application = build_application()
     await tg_application.initialize()
     await tg_application.start()
+
+    automation_service = AutomationService(
+        bot=tg_application.bot,
+        marketing=MarketingConfig(
+            enabled=config.AUTO_POST_ENABLED,
+            channel_id=config.AUTO_POST_CHANNEL_ID,
+            times=config.AUTO_POST_TIMES,
+            timezone=config.AUTO_POST_TIMEZONE,
+            bot_username=config.TELEGRAM_BOT_USERNAME,
+            source_tag=config.AUTO_POST_SOURCE_TAG,
+            posts_path=Path(config.AUTO_POSTS_FILE),
+        ),
+        report=ReportConfig(
+            enabled=config.AUTO_REPORT_ENABLED,
+            chat_id=config.AUTO_REPORT_CHAT_ID,
+            time=config.AUTO_REPORT_TIME,
+            timezone=config.AUTO_REPORT_TIMEZONE,
+            orders_path=Path(config.DATA_DIR) / "orders.json",
+        ),
+    )
+    await automation_service.start()
 
     if config.USE_POLLING:
         await tg_application.updater.start_polling(
@@ -82,6 +148,7 @@ async def on_startup(_app: web.Application) -> None:
         return
 
     webhook_url = f"{config.WEBHOOK_BASE.rstrip('/')}{config.WEBHOOK_PATH}"
+    webhook_expected_url = webhook_url
     await tg_application.bot.set_webhook(
         url=webhook_url,
         secret_token=config.WEBHOOK_SECRET or None,
@@ -89,15 +156,28 @@ async def on_startup(_app: web.Application) -> None:
         allowed_updates=Update.ALL_TYPES,
     )
     logger.info("Webhook registered at %s", webhook_url)
+    webhook_guard_task = asyncio.create_task(webhook_guard_loop())
+
 
 
 async def on_cleanup(_app: web.Application) -> None:
+    global webhook_guard_task
+    if webhook_guard_task:
+        webhook_guard_task.cancel()
+        try:
+            await webhook_guard_task
+        except (asyncio.CancelledError, Exception):
+            pass
+        webhook_guard_task = None
+    if automation_service:
+        await automation_service.stop()
     if not tg_application:
         return
     if config.USE_POLLING:
         await tg_application.updater.stop()
-    else:
-        await tg_application.bot.delete_webhook(drop_pending_updates=False)
+    # NOTE: intentionally NOT deleting the webhook here.
+    # During redeploys the old container's cleanup would otherwise wipe the
+    # webhook that the new container already registered, killing the bot.
     await tg_application.stop()
     await tg_application.shutdown()
 

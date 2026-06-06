@@ -10,7 +10,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 PRODUCTS = [
     ("product1.jpg", "#1a2744", "Kamagra\nOral Jelly", "100mg"),
-    ("product2.jpg", "#2d1a44", "Vidalista\n40mg", "Tadalafil"),
+    ("product2.jpg", "#2d1a44", "Vidalista\n60mg", "Tadalafil"),
 ]
 
 
