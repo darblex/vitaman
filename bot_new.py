@@ -454,7 +454,6 @@ def main_menu_kb(context: Optional[ContextTypes.DEFAULT_TYPE] = None) -> InlineK
         [
             [InlineKeyboardButton("💊 קמגרה אורל ג׳ל", callback_data="prod_kamagra")],
             [InlineKeyboardButton("🐎 סיאליס וידליסטה", callback_data="prod_vidalista")],
-            [InlineKeyboardButton("💪 חבילת הגבר — קמגרה + וידליסטה", callback_data="prod_bundle")],
             [InlineKeyboardButton("❓ שאלות", callback_data="faq"),
              InlineKeyboardButton("📞 צור קשר", callback_data="contact")],
         ]
@@ -471,18 +470,7 @@ def back_to_menu_kb() -> InlineKeyboardMarkup:
 def product_kb(key: str, context: ContextTypes.DEFAULT_TYPE) -> InlineKeyboardMarkup:
     p = PRODUCTS[key]
     rows: List[List[InlineKeyboardButton]] = []
-    rows.append([InlineKeyboardButton(f"🛒 הזמן עכשיו — ₪{p['base_price']}", callback_data=f"qty_{key}")])
-
-    # Upsell
-    if key in ("kamagra", "vidalista"):
-        rows.append(
-            [
-                InlineKeyboardButton(
-                    "💰 קנה את השניים יחד וחסוך! → חבילת הגבר ₪400",
-                    callback_data="prod_bundle",
-                )
-            ]
-        )
+    rows.append([InlineKeyboardButton("🛒 בחר כמות", callback_data=f"qty_{key}")])
 
     rows.append([InlineKeyboardButton("🏪 חזרה לחנות", callback_data="menu")])
     return InlineKeyboardMarkup(rows)
