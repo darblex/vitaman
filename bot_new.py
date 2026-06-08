@@ -980,7 +980,10 @@ async def buy_now_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="✏️ *שלב 1 מתוך 3*\n\nכתוב כאן את *השם המלא* שלך:",
+        text=(
+            "✏️ *שלב 1 מתוך 3 — שם מלא*\n\n"
+            "כתוב את *השם המלא* שלך בתיבה שנפתחה למטה 👇"
+        ),
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=ForceReply(input_field_placeholder="השם המלא שלך"),
     )
@@ -1943,9 +1946,6 @@ def build_application() -> Application:
     checkout_handler = ConversationHandler(
         entry_points=[
             CallbackQueryHandler(buy_now_callback, pattern=r"^buy_"),
-            CallbackQueryHandler(checkout_start, pattern=r"^checkout$"),
-            CallbackQueryHandler(upsell_bundle_callback, pattern=r"^upsell_bundle$"),
-            CallbackQueryHandler(checkout_confirm_callback, pattern=r"^checkout_confirm$"),
         ],
         states={
             NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
@@ -2003,18 +2003,16 @@ def build_application() -> Application:
     app.add_handler(CallbackQueryHandler(store_callback, pattern=r"^store$"))
     app.add_handler(CallbackQueryHandler(product_callback, pattern=r"^prod_"))
     app.add_handler(CallbackQueryHandler(qty_callback, pattern=r"^qty_"))
-    app.add_handler(CallbackQueryHandler(add_to_cart_callback, pattern=r"^addcart_"))
-    app.add_handler(CallbackQueryHandler(cart_callback, pattern=r"^cart$"))
-    app.add_handler(CallbackQueryHandler(remove_from_cart_callback, pattern=r"^rm_"))
-    app.add_handler(CallbackQueryHandler(clear_cart_callback, pattern=r"^clearcart$"))
     app.add_handler(CallbackQueryHandler(faq_callback, pattern=r"^faq$"))
     app.add_handler(CallbackQueryHandler(contact_callback, pattern=r"^contact$"))
     app.add_handler(CallbackQueryHandler(howitworks_callback, pattern=r"^howitworks$"))
     app.add_handler(CallbackQueryHandler(testimonials_callback, pattern=r"^testimonials$"))
-    # Legacy callbacks from older flows (coupon/review) - send user back to live store flow
+    # Legacy callbacks from older flows (cart/coupon/review) - send user back to live store flow
     app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^coupon_skip$"))
     app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^review_[A-Z0-9-]+_[1-5]$"))
     app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^review_skip_"))
+    app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^(cart|checkout|checkout_confirm|upsell_bundle|clearcart)$"))
+    app.add_handler(CallbackQueryHandler(legacy_reset_to_store_callback, pattern=r"^(addcart_|rm_)"))
 
     app.add_error_handler(on_error)
     return app

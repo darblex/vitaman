@@ -88,7 +88,7 @@ Message to buyer:
 
 ### Forward to seller
 Route all orders to Telegram only:
-- Representative username: `@lilnano1994`
+- Representative username: `@lilnano0`
 
 ---
 

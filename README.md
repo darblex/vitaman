@@ -14,7 +14,7 @@ Unified marketing funnel: **landing page + Telegram bot** in one deploy.
 |-----|---------|
 | `BOT_TOKEN` | Telegram bot token |
 | `FB_PIXEL_ID` | Meta Pixel |
-| `SELLER_USERNAME` | Telegram username (e.g. lilnano1994) |
+| `SELLER_USERNAME` | Telegram username (e.g. lilnano0) |
 | `SELLER_CHAT_ID` | Admin Telegram ID |
 | `TELEGRAM_BOT_USERNAME` | e.g. DrViagrashop_Bot |
 | `AUTO_POST_ENABLED` | `1` enables scheduled channel posts |
